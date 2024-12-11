@@ -1,26 +1,25 @@
-// AppProvider.tsx
+import { createContext, useContext } from 'react';
 
-import React, { createContext, useContext } from 'react'
+interface AppContextType {
+    apiUrl: string;
+    appEnv: string;
+}
 
-const AppContext = createContext();
+const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const useAppContext = () => {
-    return useContext(AppContext);
+    const context = useContext(AppContext);
+    if (!context) {
+        throw new Error('useAppContext debe usarse dentro de un AppProvider');
+    }
+    return context;
 };
 
-export default function AppProvider({children}) {
+export default function AppProvider({ children }: { children: React.ReactNode }) {
+    const value: AppContextType = {
+        apiUrl: import.meta.env.VITE_API_URL || '',
+        appEnv: import.meta.env.VITE_APP_ENV || '',
+    };
 
-    const apiUrl = import.meta.env.VITE_API_URL;
-    const appEnv = import.meta.env.VITE_APP_ENV;
-
-    let value = {
-        apiUrl,
-        appEnv
-    }
-
-  return (
-    <AppContext.Provider value={value}>
-        {children}
-    </AppContext.Provider>
-  )
+    return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
 }
