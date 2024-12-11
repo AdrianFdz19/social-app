@@ -1,5 +1,5 @@
 import express from 'express'
-import { testDatabase } from '../controllers/authControllers';
+import { testDatabase } from '../controllers/authControllers.js';
 const auth = express.Router();
 
 auth.use(express.json());
