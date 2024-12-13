@@ -1,0 +1,23 @@
+@use '../styles/main.scss' as m;
+
+.feed {
+    @include m.center;
+    align-items: flex-start;
+    width: 30rem;
+    &__content {
+        width: 100%;
+        @include m.column;
+    }
+}
+
+@media (max-width: 600px) {
+    .feed {
+        @include m.center;
+        align-items: flex-start;
+        width: 90%;
+        &__content {
+            width: 100%;
+            @include m.column;
+        }
+    }
+}

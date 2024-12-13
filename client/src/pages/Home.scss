@@ -1,0 +1,14 @@
+@use '../styles/main.scss' as m;
+
+.home {
+    height: 100%;
+    min-height: 100%;
+    @include m.center;
+    align-items: flex-start;
+    &__content {
+        width: 100%;
+        @include m.column;
+        align-items: center;
+    }
+}
+

@@ -1,0 +1,35 @@
+@use '../styles/main.scss' as m;
+
+.profpic {
+    border-radius: 100%;
+    overflow: hidden;
+    @include m.center;
+    cursor: pointer;
+    &__content {
+        border-radius: 100%;
+        height: 100%;
+        @include m.center;
+        img {
+            object-fit: cover;
+            border-radius: 100%;
+            width: 100%;
+            height: 100%;
+        }
+    }
+    &.outline {
+        border-radius: 100%;
+        padding: 0rem;
+        box-sizing: border-box;
+        background-color: rgb(255, 255, 255);
+        @include m.center;
+        .profpic__content {
+            border-radius: 100%;
+            @include m.center;
+            img {
+                object-fit: cover;
+                width: 90%;
+                height: 90%;
+            }
+        }
+    }
+}

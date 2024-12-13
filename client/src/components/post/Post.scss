@@ -1,0 +1,64 @@
+@use '../../styles/main.scss' as m;
+
+.post {
+    width: 100%;
+    @include m.whitebox;
+    padding: 0;
+    margin-bottom: 1rem;
+    &__header {
+        padding: .5rem;
+        padding-bottom: 0;
+        @include m.between;
+        &__author-info {
+            display: flex;
+            align-items: center;
+            .ph-author-inf {
+                margin-left: .5rem;
+                #ph-username {
+                    font-weight: 500;
+                    font-size: .95rem;
+                }
+                #ph-createdat {
+                    font-size: .9rem;
+                }
+            }
+        }
+    }
+    &__body {
+        &__content {
+            padding: .75rem .5rem;
+        }
+        &__media {
+            cursor: pointer;
+            img {
+                width: 100%;
+            }
+        }
+    }
+    &__summary {
+        @include m.between;
+        padding: .25rem .5rem;
+        &__data {
+            font-size: .85rem;
+            cursor: pointer;
+        }
+    }
+    &__actions {
+        @include m.between;
+        padding: .25rem .5rem;
+        &__action {
+            width: 24%;
+            @include m.center;
+            cursor: pointer;
+            height: 1.75rem;
+            .postact-icon {
+                margin-right: .5rem;
+                width: 1.2rem;
+                height: auto;
+            }
+            p {
+                font-size: .9rem;
+            }
+        }
+    }
+}

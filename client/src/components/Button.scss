@@ -1,0 +1,9 @@
+@use '../styles/main.scss' as m;
+
+.button {
+    @include m.button;
+}
+
+.button-input {
+    @include m.button;
+}

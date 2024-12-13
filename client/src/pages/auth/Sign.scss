@@ -1,0 +1,83 @@
+@use '../../styles/main.scss' as m;
+
+.sign {
+    height: 100vh;
+    @include m.center;
+    form {
+        width: 25rem;
+        @include m.column;
+        justify-content: flex-start;
+        @include m.whitebox;
+        border-radius: 15px;
+        h2 {}
+        label {
+            margin: .5rem 0;
+            width: 100%;
+            input {
+                @include m.input;
+            }
+            .sign__error {
+                
+            }
+        }
+    }
+    &__question {
+        width: 100%;
+        display: flex; 
+        font-size: .9rem;
+        align-items: center;
+        p { margin-right: .75rem; white-space: nowrap; }
+        label {
+            color: #008ae7;
+            font-weight: 500;
+            cursor: pointer;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+    &__password {
+        @include m.center;
+        position: relative;
+        &__icon {
+            right: .5rem;
+            position: absolute;
+            cursor: pointer;
+        }
+    }
+    &__error {
+        color: red;
+        font-size: .9rem;
+        margin-top: .3rem;
+    }
+    &__submit {
+        @include m.button;
+        margin-top: .75rem;
+    }
+}
+
+@media (max-width: 600px) {
+    .sign {
+        form {
+            width: 80%;
+            label {
+                input {
+
+                }
+            }
+        }
+    }
+}
+
+@media (max-width: 485px) {
+    .sign {
+        form {
+            width: 90%;
+            label {
+                input {
+
+                }
+            }
+        }
+    }
+}

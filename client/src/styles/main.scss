@@ -1,0 +1,57 @@
+// main.scss
+
+$primary-color: #000;
+$secondary-color: #0099ff;
+
+
+@mixin center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+@mixin column {
+    display: flex;
+    flex-direction: column;
+}
+@mixin between {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+@mixin around {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+@mixin button {
+    background-color: $secondary-color; 
+    border: none;
+    height: 1.8rem;
+    border-radius: 5px;
+    color: #fff;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .3s ease;
+    &:hover {
+        background-color: #008ae7; 
+    }
+}
+@mixin whitebox {
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 1rem;
+    box-sizing: border-box;
+}
+@mixin input {
+    width: 100%;
+    box-sizing: border-box;
+    height: 1.8rem;
+    border: 1px solid gainsboro;
+    border-radius: 5px;
+    padding-left: .5rem;
+    &:focus {
+        outline: none;
+        border: 1.3px solid $secondary-color;
+    }
+}
+
