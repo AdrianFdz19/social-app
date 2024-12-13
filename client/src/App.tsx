@@ -4,6 +4,7 @@ import SignUp from './pages/auth/SignUp'
 import SignIn from './pages/auth/SignIn'
 import Home from './pages/Home'
 import NestedRoute from './layouts/NestedRoute'
+import Profile from './pages/Profile/Profile'
 
 function App() {
 
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<NestedRoute />} >
           <Route path='/' element={<Home />} ></Route>
+          <Route path='/profile/:profileUserId' element={<Profile />} ></Route>
         </Route>
     
         <Route path='/sign-up' element={<SignUp />} ></Route>

@@ -7,19 +7,7 @@ import PostBody from './PostBody'
 import PostComments from './PostComments'
 import PostHeader from './PostHeader'
 import PostSummary from './PostSummary'
-
-interface PostType {
-    id: number;
-    author: {
-        username: string;
-        profilePictureUrl: string;
-    },
-    content: string;
-    mediaFiles: string[];
-    reactions: Record<string, number>;
-    userReaction: null | string;
-    createdAt: string;
-}
+import { PostType } from '../../types/post';
 
 interface PostProps {
   post: PostType;

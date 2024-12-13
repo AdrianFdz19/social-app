@@ -3,18 +3,20 @@ import { useEffect, useState } from 'react';
 import Post from '../components/post/Post';
 import PostSkeleton from '../components/post/PostSkeleton';
 import './Feed.scss';
+import { PostType } from '../types/post';
 
 export default function Feed() {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [posts, setPosts] = useState([]);
+    const [posts, setPosts] = useState<PostType[] | undefined>(undefined);
 
-    let clientPosts = [
+    let clientPosts: PostType[] = [
         {
             id: 100, 
             author: {
                 username: 'AdrianFdz19', 
-                profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733857902/post/ffojridccfqvq9mze5s4.jpg'
+                profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733857902/post/ffojridccfqvq9mze5s4.jpg',
+                isOnline: false,
             },
             content: 'redbull f1 news content', 
             mediaFiles: ['https://res.cloudinary.com/dlnapytj1/image/upload/v1733866920/profileImage/dexc2c0l09pvdf7laewm.jpg'], 
@@ -28,7 +30,8 @@ export default function Feed() {
             id: 101, 
             author: {
                 username: 'Maria Juana', 
-                profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733852462/samples/upscale-face-1.jpg'
+                profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733852462/samples/upscale-face-1.jpg',
+                isOnline: true,
             },
             content: 'Gran paseo en monterrey!', 
             mediaFiles: ['https://res.cloudinary.com/dlnapytj1/image/upload/v1733852460/samples/balloons.jpg'], 

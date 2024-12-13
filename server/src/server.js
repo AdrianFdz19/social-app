@@ -1,6 +1,7 @@
 import app from "./app.js";
 import http from 'http';
 import {Server as SocketServer} from 'socket.io'
+import events from './events/index.js';
 
 const server = http.createServer(app);
 const io = new SocketServer(server, {
@@ -10,11 +11,9 @@ const io = new SocketServer(server, {
 
 io.on('connection', (socket) => {
     const userId = socket.handshake.query.userId;
-    console.log('New connected client: ', socket.id, 'user id: ', userId);
+    events.handleUserConnection(socket, userId);
 
-    socket.on('disconnect', () => {
-        console.log(`Client disconnected: ${socket.id}`);
-    });
+    socket.on('disconnect', () => events.handleUserDisconnection(socket, userId));
 });
 
 export default server;

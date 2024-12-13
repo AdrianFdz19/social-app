@@ -12,6 +12,7 @@ export default function PostHeader({author, createdAt}) {
                 size={3} 
                 outline={false}
                 handleClick={()=>{}}
+                isOnline={author.isOnline}
             />
             <div className="ph-author-inf">
                 <p id="ph-username" >{author.username}</p>

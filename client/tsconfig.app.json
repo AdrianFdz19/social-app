@@ -20,7 +20,7 @@
     "noUnusedLocals": false, // true
     "noUnusedParameters": false, // true
     "noFallthroughCasesInSwitch": true,
-    "noImplicitAny": false, // Permite tipos 'any' implícitos
+    "noImplicitAny": true, // Permite tipos 'any' implícitos
     "noUncheckedSideEffectImports": true
   },
   "include": ["src"]
