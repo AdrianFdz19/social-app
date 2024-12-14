@@ -4,11 +4,13 @@ import { useParams } from 'react-router-dom';
 import './Profile.scss';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useEffect } from 'react';
+import ProfileHero from './ProfileHero';
+import { ProfileType } from '../../types/user';
 
 export default function Profile() {
 
   const { user } = useAppContext();
-  const {profileUserId} = useParams();
+  const { profileUserId } = useParams();
 
   const userProfile = profileUserId == user.id;
 
@@ -17,11 +19,21 @@ export default function Profile() {
       console.log(userProfile);
     }
   }, [user, profileUserId]);
+
+  let profile: ProfileType = {
+    id: 1,
+    username: 'Adrian Fdz',
+    pictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733857902/post/ffojridccfqvq9mze5s4.jpg',
+    bannerPictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733866920/profileImage/dexc2c0l09pvdf7laewm.jpg',
+    bio: '', 
+    createdAt: '', 
+    updatedAt: ''
+  };
     
   return (
     <div className="profile">
         <div className="profile__content">
-            <p>Profile</p>
+            <ProfileHero data={profile} />
         </div>
     </div>
   )

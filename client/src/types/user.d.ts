@@ -11,3 +11,13 @@ export interface User {
     createdAt: string; 
     updatedAt: string;
 }
+
+export interface ProfileType {
+    id: number;
+    username: string;
+    pictureUrl: string,
+    bannerPictureUrl: string;
+    bio: string;
+    createdAt: string;
+    updatedAt: string;
+  }
