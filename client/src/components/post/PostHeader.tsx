@@ -3,7 +3,16 @@
 import Button from "../Button";
 import ProfilePicture from "../ProfilePicture";
 
-export default function PostHeader({author, createdAt}) {
+interface PostHeaderProps {
+  author: {
+    username: string;
+    profilePictureUrl: string;
+    isOnline: boolean;
+  },
+  createdAt: string;
+}
+
+export default function PostHeader({author, createdAt}: PostHeaderProps) {
   return (
     <div className="post__header">
         <div className="post__header__author-info">

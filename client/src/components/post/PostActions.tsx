@@ -2,7 +2,11 @@
 
 import { postIcons } from "../../assets/icons"
 
-export default function PostActions({userReaction}) {
+interface PostActionsProps {
+  userReaction: string | null;
+}
+
+export default function PostActions({userReaction} : PostActionsProps) {
   return (
     <div className="post__actions">
         <div className="post__actions__action">

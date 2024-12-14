@@ -1,6 +1,11 @@
 // PostBody.tsx
 
-export default function PostBody({content, mediaFiles}) {
+interface PostBodyProps {
+  content: string; 
+  mediaFiles: string[];
+}
+
+export default function PostBody({content, mediaFiles}: PostBodyProps) {
   return (
     <div className="post__body">
         { content &&
