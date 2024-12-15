@@ -21,7 +21,7 @@ export default function Post({post}: PostProps) {
     <div className="post">
         <PostHeader author={post.author} createdAt={post.createdAt} />
         <PostBody content={post.content} mediaFiles={post.mediaFiles} /> 
-        <PostSummary reactions={post.reactions} /> 
+        <PostSummary reactions={post.reactions} commentsCount={post.commentsCount} /> 
         <PostActions userReaction={post.userReaction} /> 
         {comments && 
         <PostComments />

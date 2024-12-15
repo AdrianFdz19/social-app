@@ -1,11 +1,13 @@
 // PostSummary.tsx
 
 interface PostSummaryProps {
-  reactions: Record<string, string>;
+  reactions: {
+    likes?: number;
+  },
   commentsCount: number;
 }
 
-export default function PostSummary({reactions, commentsCount = 0}: PostSummaryProps) {
+export default function PostSummary({reactions, commentsCount }: PostSummaryProps) {
   return (
     <div className="post__summary">
         <p className="post__summary__data">{reactions.likes} likes</p>

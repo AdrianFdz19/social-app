@@ -1,10 +1,12 @@
 // PostHeader.tsx
 
+import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import ProfilePicture from "../ProfilePicture";
 
 interface PostHeaderProps {
   author: {
+    id: number;
     username: string;
     profilePictureUrl: string;
     isOnline: boolean;
@@ -13,6 +15,9 @@ interface PostHeaderProps {
 }
 
 export default function PostHeader({author, createdAt}: PostHeaderProps) {
+
+  const navigate = useNavigate();
+
   return (
     <div className="post__header">
         <div className="post__header__author-info">
@@ -20,7 +25,7 @@ export default function PostHeader({author, createdAt}: PostHeaderProps) {
                 url={author.profilePictureUrl} 
                 size={3} 
                 outline={false}
-                handleClick={()=>{}}
+                handleClick={()=>navigate(`/profile/${author.id}`)}
                 isOnline={author.isOnline}
             />
             <div className="ph-author-inf">

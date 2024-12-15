@@ -14,6 +14,7 @@ export default function Feed() {
         {
             id: 100, 
             author: {
+                id: 1, 
                 username: 'AdrianFdz19', 
                 profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733857902/post/ffojridccfqvq9mze5s4.jpg',
                 isOnline: false,
@@ -23,12 +24,14 @@ export default function Feed() {
             reactions: {
                 likes: 95,
             },
+            commentsCount: 0,
             userReaction: null, 
             createdAt: '2 days ago'
         },
         {
             id: 101, 
             author: {
+                id: 2,
                 username: 'Maria Juana', 
                 profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733852462/samples/upscale-face-1.jpg',
                 isOnline: true,
@@ -38,6 +41,7 @@ export default function Feed() {
             reactions: {
                 likes: 95,
             },
+            commentsCount: 3,
             userReaction: null, 
             createdAt: '2 days ago'
         }

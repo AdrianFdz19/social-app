@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../types/user';
 import useAuthToken from '../hooks/useAuthToken';
+import { useNavigate } from 'react-router-dom';
 
 interface AppContextType {
     apiUrl: string;

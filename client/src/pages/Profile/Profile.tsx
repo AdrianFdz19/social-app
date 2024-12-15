@@ -6,6 +6,7 @@ import { useAppContext } from '../../contexts/AppProvider';
 import { useEffect } from 'react';
 import ProfileHero from './ProfileHero';
 import { ProfileType } from '../../types/user';
+import Feed from '../Feed';
 
 export default function Profile() {
 
@@ -15,6 +16,7 @@ export default function Profile() {
   const userProfile = profileUserId == user.id;
 
   useEffect(() => {
+    window.scrollTo(0,0);
     if (user && profileUserId) {
       console.log(userProfile);
     }
@@ -34,6 +36,8 @@ export default function Profile() {
     <div className="profile">
         <div className="profile__content">
             <ProfileHero data={profile} />
+
+            <Feed />
         </div>
     </div>
   )

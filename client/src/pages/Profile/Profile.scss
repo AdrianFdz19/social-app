@@ -5,13 +5,16 @@
     &__content {
         width: 70%;
         @include m.column;
+        align-items: center;
+    }
+    .feed {
+        margin-top: 1rem;
     }
     &__hero {
         width: 100%;
         .banner {
             height: 18rem;
             @include m.center;
-            border-radius: 10px;
             background-color: #fff;
             img {
                 width: 100%;
@@ -46,7 +49,6 @@
             .banner {
                 height: 18rem;
                 @include m.center;
-                border-radius: 10px;
                 background-color: #fff;
                 img {
                     width: 100%;
@@ -82,7 +84,6 @@
             .banner {
                 height: 10rem;
                 @include m.center;
-                border-radius: 0;
                 background-color: #fff;
                 img {
                     width: 100%;
@@ -92,7 +93,6 @@
                 }
             }
             .picture-box {
-                border: 1px solid rgb(173, 173, 173);
                 background-color: #fff;
                 height: 3.5rem; /* cambiar esto en tamaño responsivo */
                 position: relative;
