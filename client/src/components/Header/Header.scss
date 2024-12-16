@@ -3,6 +3,10 @@
 .header {
     background-color: #fff;
     border-bottom: 1px solid gainsboro;
+    position: fixed; 
+    top: 0;
+    width: 100%;
+    z-index: 500;
     @include m.center;
     &__content {
         margin: .25rem 0;

@@ -7,7 +7,7 @@
         top: 0;
         width: 100%;
         height: 3rem;
-        z-index: 100;
+        z-index: 500;
         border-bottom: 1px solid gainsboro;
         @include m.center;
         &__content {
@@ -32,7 +32,7 @@
         bottom: 0;
         width: 100%;
         height: 3rem;
-        z-index: 100;
+        z-index: 500;
         border-top: 1px solid gainsboro;
         @include m.center;
         align-items: flex-start;
