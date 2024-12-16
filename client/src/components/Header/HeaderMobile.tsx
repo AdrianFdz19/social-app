@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { headerIcons as icon } from '../../assets/icons';
 import { useAppContext } from '../../contexts/AppProvider';
 import './HeaderMobile.scss';
+import ProfilePicture from '../ProfilePicture';
 
 export default function HeaderMobile() {
 
@@ -35,7 +36,13 @@ export default function HeaderMobile() {
                     <icon.notifications className='hdmob-sec-ico' />
                 </div>
                 <div className="hdmob-section">
-                    <icon.home className='hdmob-sec-ico' />
+                    <ProfilePicture
+                        size={2}
+                        isOnline={false}
+                        outline={false} 
+                        url={user.profilePictureUrl} 
+                        handleClick={()=>navigate(`/profile/${user.id}`)}
+                    />
                 </div>
             </div>  
         </div>

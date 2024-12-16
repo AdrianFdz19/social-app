@@ -14,47 +14,10 @@ export default function Header() {
     const navigate = useNavigate();
     const isMobile = useMobileSize();
 
-    {/* <HeaderMobile /> */}
-
   return (
     <>
     {isMobile ? (
-        <div className="header">
-        <div className="header__content">
-            <label onClick={()=>navigate(`/`)} >Social App</label>
-            <div className="header__sections">
-
-                <div className="header__sections__section" onClick={()=>navigate(`/`)}>
-                    <icon.home className='hss-icon' /> 
-                    <label>Home</label>
-                </div>
-                <div className="header__sections__section">
-                    <icon.followers className='hss-icon' /> 
-                    <label>Followers</label>
-                </div>
-                <div className="header__sections__section">
-                    <icon.messages className='hss-icon' /> 
-                    <label>Messages</label>
-                </div>
-                <div className="header__sections__section">
-                    <icon.notifications className='hss-icon' /> 
-                    <label>Notifications</label>
-                </div>
-                
-                <div className="header__sections__section">
-                    <ProfilePicture
-                        url={user?.profilePictureUrl}
-                        size={2} 
-                        outline={false} 
-                        handleClick={()=>navigate(`/profile/${user.id}`)} 
-                        isOnline={false}
-                    />
-                    <label>Profile</label>
-                </div>
-
-            </div>
-        </div>
-        </div>
+        <HeaderMobile /> 
     ) : (
         <div className="header">
         <div className="header__content">
