@@ -1,22 +1,20 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
 
 export default function useMobileSize() {
-  
-    const [isMobile, setIsMobile] = useState(false);
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600); // Inicialización correcta
 
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth <= 600 );
+            setIsMobile(window.innerWidth <= 600);
         };
 
-        window.addEventListener('resize', handleResize);
+        handleResize(); // Asegurarse de que el estado se actualiza al montarse
 
+        window.addEventListener('resize', handleResize);
         return () => {
             window.removeEventListener('resize', handleResize);
-        }
-
-    }, [window]);
+        };
+    }, []); // Array vacío: este efecto solo necesita ejecutarse una vez
 
     return isMobile;
-
 }
