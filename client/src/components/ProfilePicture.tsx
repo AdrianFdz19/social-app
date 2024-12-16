@@ -1,5 +1,6 @@
 // ProfilePicture.tsx
 
+import { profileIcons } from '../assets/icons';
 import './ProfilePicture.scss';
 
 interface ProfilePictureType {
@@ -22,7 +23,7 @@ export default function ProfilePicture({url, size, outline, handleClick, isOnlin
             { url ? (
                 <img src={url} alt="profile_picture_url" />
             ) : (
-                <p>none</p>
+                <profileIcons.guest className='profpic-none' />
             )}
         </div>
     </div>

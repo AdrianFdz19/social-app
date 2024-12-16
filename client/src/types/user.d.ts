@@ -13,8 +13,9 @@ export interface User {
 }
 
 export interface ProfileType {
-    id: number;
+    id: string | null;
     username: string;
+    email: string;
     pictureUrl: string,
     bannerPictureUrl: string;
     bio: string;

@@ -31,12 +31,12 @@ export default function Feed() {
         {
             id: 101, 
             author: {
-                id: 2,
-                username: 'Maria Juana', 
+                id: 5,
+                username: 'Juana', 
                 profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733852462/samples/upscale-face-1.jpg',
                 isOnline: true,
             },
-            content: 'Gran paseo en monterrey!', 
+            content: 'Great!', 
             mediaFiles: ['https://res.cloudinary.com/dlnapytj1/image/upload/v1733852460/samples/balloons.jpg'], 
             reactions: {
                 likes: 95,

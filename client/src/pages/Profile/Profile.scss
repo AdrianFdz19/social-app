@@ -23,15 +23,26 @@
                 object-fit: cover;
             }
         }
+        .banner-none {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, #efefef, #c0c0c0);
+        }
         .picture-box {
             /* border: 1px solid blue; */
             background-color: #fff;
             height: 5rem;
             position: relative;
+            display: flex;
+            align-items: center;
             .picture {
                 position: absolute; 
                 bottom: 0;
                 left: .75rem;
+            }
+            #pf-username {
+                margin-left: 11.5rem;
+                font-weight: 550;
             }
         }
     }
@@ -67,6 +78,9 @@
                     bottom: 0;
                     left: .75rem;
                 }
+                #pf-username {
+                    
+                }
             }
         }
     }
@@ -75,6 +89,7 @@
 @media (max-width: 600px) {
     .profile {
         @include m.center;
+        margin-top: 3rem;
         &__content {
             width: 100%; /* cambiar esto */
             @include m.column;
@@ -100,6 +115,9 @@
                     position: absolute; 
                     bottom: 0;
                     left: .25rem;
+                }
+                #pf-username {
+                    margin-left: 8rem;
                 }
             }
         }

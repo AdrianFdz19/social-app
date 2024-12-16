@@ -32,6 +32,7 @@ export default function ProfileHero({data} : ProfileHeroProps) {
                     isOnline={false}
                 />
             </div>
+            <h3 id='pf-username' >{username}</h3>
         </div>
     </div>
   )

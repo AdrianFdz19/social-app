@@ -5,6 +5,7 @@
     min-height: 100%;
     @include m.center;
     align-items: flex-start;
+    margin-top: 3rem;
     &__content {
         width: 100%;
         @include m.column;

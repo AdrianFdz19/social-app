@@ -4,6 +4,7 @@
     @include m.center;
     align-items: flex-start;
     width: 30rem;
+    margin-top: 1rem;
     &__content {
         width: 100%;
         @include m.column;

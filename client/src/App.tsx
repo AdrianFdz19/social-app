@@ -5,6 +5,7 @@ import SignIn from './pages/auth/SignIn'
 import Home from './pages/Home'
 import NestedRoute from './layouts/NestedRoute'
 import Profile from './pages/Profile/Profile'
+import LayerWithHeader from './layouts/LayerWithHeader'
 
 function App() {
 
@@ -12,8 +13,10 @@ function App() {
     <div className="app">
       <Routes>
         <Route path='/' element={<NestedRoute />} >
-          <Route path='/' element={<Home />} ></Route>
-          <Route path='/profile/:profileUserId' element={<Profile />} ></Route>
+          <Route element={<LayerWithHeader />} >
+            <Route path='/' element={<Home />} ></Route>
+            <Route path='/profile/:profileUserId' element={<Profile />} ></Route>
+          </Route>
         </Route>
     
         <Route path='/sign-up' element={<SignUp />} ></Route>
