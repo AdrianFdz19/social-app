@@ -28,6 +28,37 @@ export const validationRules = [
         .escape()
 ];
 
+export const validateToken = (req, res) => {
+    const token = req.headers.authorization?.split(' ')[1];
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'No token provided' });
+    }
+    try {
+        const decoded = JWT.verify(token, process.env.SECRET_KEY);
+        res.status(200).json({ success: true, user: decoded });
+    } catch (error) {
+        res.status(401).json({ success: false, message: 'Invalid or expired token' });
+    }
+};
+
+export const refreshToken = (req, res) => {
+    const token = req.body.token;
+    if (!token) {
+        return res.status(401).json({ success: false, message: 'No token provided' });
+    }
+    try {
+        const decoded = JWT.verify(token, process.env.SECRET_KEY, { ignoreExpiration: true });
+        const newToken = JWT.sign(
+            { id: decoded.id, username: decoded.username },
+            process.env.SECRET_KEY,
+            { expiresIn: '1h' }
+        );
+        res.status(200).json({ success: true, token: newToken });
+    } catch (error) {
+        res.status(401).json({ success: false, message: 'Invalid token' });
+    }
+};
+
 export const handleSignUp = async (req, res) => {
     try {
         // Extraer datos del cuerpo de la solicitud

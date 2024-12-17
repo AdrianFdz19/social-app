@@ -1,10 +1,14 @@
 // authRoutes.js
 
 import express from 'express'
-import { handleSignIn, handleSignUp, testDatabase, validationRules } from '../controllers/authControllers.js';
+import { handleSignIn, handleSignUp, refreshToken, testDatabase, validateToken, validationRules } from '../controllers/authControllers.js';
 const auth = express.Router();
 
 auth.use(express.json());
+
+auth.get('/validate', validateToken);
+
+auth.post('/refresh', refreshToken);
 
 auth.get('/test', testDatabase); // Route for database testing connection
 
