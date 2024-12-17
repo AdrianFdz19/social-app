@@ -4,11 +4,13 @@ import Post from '../components/post/Post';
 import PostSkeleton from '../components/post/PostSkeleton';
 import './Feed.scss';
 import { PostType } from '../types/post';
+import CreatePost from '../components/createPost/CreatePost';
+import { useFeedContext } from '../contexts/FeedProvider';
 
 export default function Feed() {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [posts, setPosts] = useState<PostType[] | undefined>(undefined);
+    const { posts, setPosts } = useFeedContext();
 
     let clientPosts: PostType[] = [
         {
@@ -26,7 +28,7 @@ export default function Feed() {
             },
             commentsCount: 0,
             userReaction: null, 
-            createdAt: '2 days ago'
+            createdAt: '2024-12-17 13:49:28.32396'
         },
         {
             id: 101, 
@@ -43,7 +45,7 @@ export default function Feed() {
             },
             commentsCount: 3,
             userReaction: null, 
-            createdAt: '2 days ago'
+            createdAt: '2024-12-17 13:49:28.32396'
         }
     ]
 
@@ -65,6 +67,7 @@ export default function Feed() {
   return (
     <div className="feed">
         <div className="feed__content">
+            <CreatePost />
             {isLoading ? (
                 Array(2).fill(0).map((_, index) => <PostSkeleton key={index} />)
             ) : (

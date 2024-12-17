@@ -1,0 +1,125 @@
+@use '../../styles/main.scss' as m;
+
+.crpost {
+    @include m.whitebox; 
+    margin-bottom: 1rem;
+    padding: .5rem;
+    &__box {
+        @include m.between;
+        cursor: pointer;
+        label {
+            @include m.input;
+            margin-left: 1rem;
+            background-color: m.$soft-gray;
+            display: flex;
+            align-items: center;
+            border: none;
+            cursor: pointer;
+            height: 2rem;
+            font-size: .9rem;
+            color: m.$gray;
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .crpost {
+        @include m.whitebox; 
+        margin-bottom: 1rem;
+        padding: .5rem;
+        border-radius: 0;
+        width: 100%;
+    }
+}
+
+.crpost-modal {
+    @include m.whitebox;
+    width: 40rem;
+    padding: 0.5rem;
+
+    &__form {
+        position: relative;
+        @include m.column;
+
+        h2 {
+            text-align: center;
+        }
+
+        &__options {
+            @include m.between;
+
+            &__option {
+                cursor: pointer;
+                @include m.center;
+                background-color: m.$soft-gray;
+                border-radius: 5px;
+                padding: 0.15rem 0.3rem;
+                color: m.$gray;
+                position: relative;
+                border: 1px solid m.$gray;
+                input { 
+                    position: absolute;
+                    width: 100%;
+                    height: 100%;
+                    opacity: 0;
+                    cursor: pointer;
+                }
+
+                label {
+                    font-size: 0.9rem;
+                    margin-left: 0.5rem;
+                    cursor: pointer;
+                }
+
+                &__icon {
+                    width: 1.5rem;
+                    height: auto;
+                }
+            }
+        }
+
+        &__textarea {
+            width: 100%;
+            margin: 0.5rem 0;
+
+            textarea {
+                width: 100%;
+                box-sizing: border-box;
+                @include m.input;
+                min-height: 7rem;
+                padding: 0.5rem;
+            }
+        }
+
+        &__actions {
+            display: flex; 
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: .5rem;
+            button {
+                @include m.button;
+                background-color: m.$mid-gray;
+                width: 7rem;
+                &:hover {
+                    background-color: m.$gray;
+                }
+            }
+
+            input {
+                @include m.button;
+                margin-left: 1rem;
+                width: 7rem;
+                font-weight: 600;
+            }
+        }
+    }
+}
+
+@media (max-width: 600px) {
+    .crpost-modal {
+        @include m.whitebox;
+        width: 40rem;
+        padding: 0.5rem;
+        border-radius: 0;
+    }
+}

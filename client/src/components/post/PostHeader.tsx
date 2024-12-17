@@ -3,6 +3,7 @@
 import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import ProfilePicture from "../ProfilePicture";
+import { formatTimestampRelative } from "../../utils/time";
 
 interface PostHeaderProps {
   author: {
@@ -30,7 +31,7 @@ export default function PostHeader({author, createdAt}: PostHeaderProps) {
             />
             <div className="ph-author-inf">
                 <p id="ph-username" >{author.username}</p>
-                <p id="ph-createdat" >{createdAt}</p>
+                <p id="ph-createdat" >{formatTimestampRelative(createdAt)}</p>
             </div>
         </div>
         <Button

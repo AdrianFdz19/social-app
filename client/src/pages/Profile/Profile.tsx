@@ -14,56 +14,57 @@ export default function Profile() {
   const { profileUserId } = useParams();
   const [profile, setProfile] = useState<ProfileType | undefined>(undefined)
 
-  const userProfile = profileUserId == user.id;
-  console.log(profileUserId, userProfile);
-
   useEffect(() => {
-    window.scrollTo(0,0);
+    // Scroll to the top of the page when the component mounts
+    window.scrollTo(0, 0);
 
-    const fetchProfileInfo = async() => {
-      try { 
-        const response = await fetch(`${apiUrl}/users/profile/${profileUserId}`);
-        if (response.ok) {
-          const data = await response.json();
-          const object = data.profileInfo;
-          let profileInfo = {
-            id: object.id, 
-            username: object.username, 
-            email: object.email, 
-            bio: object.bio, 
-            pictureUrl: object.profile_picture_url, 
-            bannerPictureUrl: object.banner_picture_url,
-            createdAt: object.created_at,
-            updatedAt: object.updated_at
-          };
-          setProfile(profileInfo);
+    // Determine if the profile is the user's own profile
+    const isUserProfile = profileUserId === user.id;
+
+    const fetchProfile = async () => {
+      try {
+        if (isUserProfile) {
+          // Set local user profile data directly
+          setProfile({
+            id: user.id,
+            username: user.username,
+            email: user.email,
+            bio: user.bio,
+            pictureUrl: user.profilePictureUrl,
+            bannerPictureUrl: user.bannerPictureUrl,
+            createdAt: user.createdAt,
+            updatedAt: user.updatedAt,
+          });
+        } else {
+          // Fetch profile data for another user
+          const response = await fetch(`${apiUrl}/users/profile/${profileUserId}`);
+          if (!response.ok) throw new Error("Failed to fetch profile data");
+          
+          const { profileInfo } = await response.json();
+          setProfile({
+            id: profileInfo.id,
+            username: profileInfo.username,
+            email: profileInfo.email,
+            bio: profileInfo.bio,
+            pictureUrl: profileInfo.profile_picture_url,
+            bannerPictureUrl: profileInfo.banner_picture_url,
+            createdAt: profileInfo.created_at,
+            updatedAt: profileInfo.updated_at,
+          });
         }
-      } catch(err) {
-        console.error(err);
+      } catch (error) {
+        console.error("Error fetching profile:", error);
       }
-    }
-    const setUserProfile = () => {
-      let userProfile: ProfileType = {
-        id: user.id, 
-        username: user.username, 
-        email: user.email, 
-        bio: user.bio,
-        pictureUrl: user.profilePictureUrl, 
-        bannerPictureUrl: user.bannerPictureUrl, 
-        createdAt: user.createdAt, 
-        updatedAt: user.updatedAt
-      };
-      setProfile(userProfile)
-    }
-    userProfile ? setUserProfile() : fetchProfileInfo();
-  }, [user, profileUserId]);
+    };
+
+    fetchProfile();
+  }, [user, profileUserId, apiUrl]);
 
   return (
     <div className="profile">
         <div className="profile__content">
-            {profile && <ProfileHero data={profile} /> }
-
-            <Feed />
+        {profile ? <ProfileHero data={profile} /> : <p>Loading profile...</p>}
+        <Feed />
         </div>
     </div>
   )

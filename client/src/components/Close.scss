@@ -1,0 +1,12 @@
+@use '../styles/main.scss' as m;
+
+.close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    &__icon {
+        width: 1.5rem;
+        height: auto;
+        cursor: pointer;
+    }
+}

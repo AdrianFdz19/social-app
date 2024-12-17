@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../types/user';
 import useAuthToken from '../hooks/useAuthToken';
-import { useNavigate } from 'react-router-dom';
 
 interface AppContextType {
     apiUrl: string;
@@ -29,6 +28,50 @@ export default function AppProvider({ children }: { children: React.ReactNode })
     const authToken = manageToken.get();
 
     useEffect(() => {
+        async function verifyToken() {
+            if (!authToken) {
+                console.log('No session token found.');
+                setIsLoading(false);
+                return;
+            }
+    
+            try {
+                const response = await fetch(`${import.meta.env.VITE_API_URL}/auth/validate`, {
+                    method: 'GET',
+                    headers: {
+                        Authorization: `Bearer ${authToken}`,
+                    },
+                });
+    
+                if (!response.ok) {
+                    throw new Error('Token is invalid or expired.');
+                }
+    
+                const data = await response.json();
+                setUser({
+                    id: data.user.id,
+                    username: data.user.username,
+                    email: data.user.email,
+                    profilePictureUrl: data.user.profile_picture_url,
+                    bannerPictureUrl: data.user.banner_picture_url,
+                    bio: data.user.bio,
+                    isOnline: data.user.is_online,
+                    createdAt: data.user.created_at,
+                    updatedAt: data.user.updated_at,
+                });
+            } catch (error) {
+                console.error('Token verification failed:', error.message);
+                manageToken.remove(); // Eliminar token del cliente
+                setUser(undefined);
+            } finally {
+                setIsLoading(false);
+            }
+        }
+    
+        verifyToken();
+    }, [authToken]);    
+
+    /* useEffect(() => {
         const token = authToken; // Obtener el token reactivo del hook
         if (token) {
             const payload = JSON.parse(atob(token.split('.')[1])); // Decodificar el token
@@ -50,7 +93,7 @@ export default function AppProvider({ children }: { children: React.ReactNode })
             console.log('No session token found.');
             setIsLoading(false);
         }
-    }, [authToken]);
+    }, [authToken]); */
 
     useEffect(() => {
        if (user) {

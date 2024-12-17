@@ -1,0 +1,23 @@
+@use '../styles/main.scss' as m;
+
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 550;
+    @include m.center;
+    background-color: #0000003e;
+    opacity: 0;
+    animation: showUp .25s ease forwards;
+}
+
+@keyframes showUp {
+    from {
+        opacity: 0;
+    } to {
+        opacity: 1;
+    }
+}
+

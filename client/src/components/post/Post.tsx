@@ -22,7 +22,7 @@ export default function Post({post}: PostProps) {
         <PostHeader author={post.author} createdAt={post.createdAt} />
         <PostBody content={post.content} mediaFiles={post.mediaFiles} /> 
         <PostSummary reactions={post.reactions} commentsCount={post.commentsCount} /> 
-        <PostActions userReaction={post.userReaction} /> 
+        <PostActions userReaction={post.userReaction} postId={post.id} /> 
         {comments && 
         <PostComments />
         }

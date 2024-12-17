@@ -10,6 +10,8 @@ import { BsFillPeopleFill as followers } from "react-icons/bs";
 import { MdNotifications as notifications } from "react-icons/md";
 import { PiChatCenteredDotsFill as messages } from "react-icons/pi";
 import { AiFillHome as home } from "react-icons/ai";
+import { IoIosClose as close } from "react-icons/io";
+import { MdOutlineAddPhotoAlternate as addmedia } from "react-icons/md";
 
 export const headerIcons = {
     followers,
@@ -32,6 +34,11 @@ export const postIcons = {
     liked,
     comment,
     share, 
-    save
+    save,
+    addmedia
+}
+
+export const utilIcons = {
+    close
 }
 
