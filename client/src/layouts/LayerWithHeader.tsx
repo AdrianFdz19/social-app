@@ -1,8 +1,7 @@
 // Header.tsx
 
 import { Outlet } from "react-router-dom";
-// @ts-ignore
-import Header from "../components/header/Header.tsx";
+import Header from "../components/header/Header";
 
 export default function LayerWithHeader() {
   return (
