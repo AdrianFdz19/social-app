@@ -1,12 +1,12 @@
 // Header.tsx
 
 import { useNavigate } from 'react-router-dom';
-import { headerIcons as icon } from '../assets/icons';
-import { useAppContext } from '../contexts/AppProvider';
-import ProfilePicture from './ProfilePicture';
+import { headerIcons as icon } from '../../assets/icons';
+import { useAppContext } from '../../contexts/AppProvider';
+import ProfilePicture from '../ProfilePicture';
 import './Header.scss';
-import HeaderMobile from './Header/HeaderMobile';
-import useMobileSize from '../hooks/useMobileSize';
+import HeaderMobile from './HeaderMobile';
+import useMobileSize from '../../hooks/useMobileSize';
 
 export default function Header() {
 
