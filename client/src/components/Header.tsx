@@ -5,7 +5,7 @@ import { headerIcons as icon } from '../assets/icons';
 import { useAppContext } from '../contexts/AppProvider';
 import ProfilePicture from './ProfilePicture';
 import './Header.scss';
-import HeaderMobile from './header/HeaderMobile';
+import HeaderMobile from './Header/HeaderMobile';
 import useMobileSize from '../hooks/useMobileSize';
 
 export default function Header() {
