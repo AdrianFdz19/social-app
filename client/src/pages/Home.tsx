@@ -7,7 +7,7 @@ export default function Home() {
   return (
     <div className="home">
         <div className="home__content">
-            <Feed />
+            <Feed context="home" profileId={null} />
         </div>
     </div>
   )

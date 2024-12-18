@@ -7,7 +7,6 @@ import { useAppContext } from '../../contexts/AppProvider';
 import MediaPreview from '../mediaPreview/MediaPreview';
 import { useUploadMedia } from '../../hooks/useUploadMedia';
 import { useFeedContext } from '../../contexts/FeedProvider';
-import ProfilePicture from '../ProfilePicture';
 
 interface CreatePostProps {
     handleModal: () => any;

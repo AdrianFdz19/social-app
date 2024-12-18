@@ -4,6 +4,8 @@ export const handleCreatePost = async (req, res) => {
     const { content, mediaUrls } = req.body;
     const userId = req.user.id;
 
+    console.log(req.body);
+
     try {
         // Validar datos de entrada
         if (!userId) {
@@ -13,12 +15,13 @@ export const handleCreatePost = async (req, res) => {
         // Crear el post
         const createPostQuery = await pool.query(`INSERT INTO posts (user_id, content) VALUES($1, $2) RETURNING *`, [userId, content]);
         const data = createPostQuery.rows[0];
-        const postId = data.post_id;
+        const postId = data.id;
 
         // Si existen archivos multimedia entonces agregarlos a la tabla media_files
         if (mediaUrls.length > 0) {
             for (let url of mediaUrls) {
                 await pool.query(`INSERT INTO media_files (user_id, post_id, url, file_type, context) VALUES($1, $2, $3, $4, $5)`, [userId, postId, url, 'image', 'post']);
+                console.log(`SE AGREGO UNA URL: ${url} AL POST CON EL ID: ${postId}`);
             }
         }
 
@@ -109,3 +112,74 @@ export const handlePostReaction = async (req, res) => {
         client.release(); // Liberar el cliente de la conexión
     }
 };
+
+
+export const handleFeedPosts = async (req, res) => {
+    const { context, profileid: profileId } = req.query;
+    const userId = req.user.id; // ID del usuario autenticado
+
+    try {
+        // Selección dinámica de filtros según el contexto
+        let filterClause = '';
+
+        if (context === 'profile' && profileId) {
+            filterClause = `WHERE p.user_id = ${profileId}`;
+        }
+
+        const query = `
+            SELECT 
+                p.id AS post_id,
+                p.content,
+                p.created_at,
+                u.id AS user_id,
+                u.username,
+                u.profile_picture_url,
+                u.is_online,
+                COUNT(r.id) AS total_reactions,
+                ur.reaction_type AS user_reaction,
+                ARRAY_AGG(m.url) FILTER (WHERE m.url IS NOT NULL) AS media_files
+            FROM 
+                posts p
+            INNER JOIN 
+                users u ON u.id = p.user_id
+            LEFT JOIN 
+                post_reactions r ON r.post_id = p.id
+            LEFT JOIN 
+                post_reactions ur ON ur.user_id = $1 AND ur.post_id = p.id
+            LEFT JOIN 
+                media_files m ON m.post_id = p.id
+            ${filterClause}  -- Aplica el filtro según el contexto
+            GROUP BY 
+                p.id, u.id, ur.reaction_type
+            ORDER BY 
+                p.created_at DESC;
+        `;
+
+        const result = await pool.query(query, [userId]);
+
+        // Transformar los datos directamente
+        const finalPosts = result.rows.map(post => ({
+            id: post.post_id,
+            author: {
+                id: post.user_id,
+                username: post.username,
+                profilePictureUrl: post.profile_picture_url,
+                isOnline: post.is_online,
+            },
+            content: post.content,
+            mediaFiles: post.media_files || [], // Garantiza un array incluso si no hay URLs
+            reactions: {
+                likes: parseInt(post.total_reactions, 10) || 0,
+            },
+            commentsCount: 0, // Ajusta esto si necesitas incluir comentarios
+            userReaction: post.user_reaction,
+            createdAt: post.created_at,
+        }));
+
+        res.status(200).json({ success: true, posts: finalPosts });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ success: false, error: 'Server error' });
+    }
+};
+

@@ -64,7 +64,7 @@ export default function Profile() {
     <div className="profile">
         <div className="profile__content">
         {profile ? <ProfileHero data={profile} /> : <p>Loading profile...</p>}
-        <Feed />
+        <Feed context='profile' profileId={profileUserId} />
         </div>
     </div>
   )

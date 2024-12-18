@@ -3,66 +3,49 @@ import { useEffect, useState } from 'react';
 import Post from '../components/post/Post';
 import PostSkeleton from '../components/post/PostSkeleton';
 import './Feed.scss';
-import { PostType } from '../types/post';
 import CreatePost from '../components/createPost/CreatePost';
 import { useFeedContext } from '../contexts/FeedProvider';
+import { useAppContext } from '../contexts/AppProvider';
+import useAuthToken from '../hooks/useAuthToken';
 
-export default function Feed() {
+interface FeedProps {
+    context: string;
+    profileId: string;
+}
+
+export default function Feed({context, profileId}: FeedProps) {
 
     const [isLoading, setIsLoading] = useState(true);
     const { posts, setPosts } = useFeedContext();
-
-    let clientPosts: PostType[] = [
-        {
-            id: 100, 
-            author: {
-                id: 1, 
-                username: 'AdrianFdz19', 
-                profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733857902/post/ffojridccfqvq9mze5s4.jpg',
-                isOnline: false,
-            },
-            content: 'redbull f1 news content', 
-            mediaFiles: ['https://res.cloudinary.com/dlnapytj1/image/upload/v1733866920/profileImage/dexc2c0l09pvdf7laewm.jpg'], 
-            reactions: {
-                likes: 95,
-            },
-            commentsCount: 0,
-            userReaction: null, 
-            createdAt: '2024-12-17 13:49:28.32396'
-        },
-        {
-            id: 101, 
-            author: {
-                id: 5,
-                username: 'Juana', 
-                profilePictureUrl: 'https://res.cloudinary.com/dlnapytj1/image/upload/v1733852462/samples/upscale-face-1.jpg',
-                isOnline: true,
-            },
-            content: 'Great!', 
-            mediaFiles: ['https://res.cloudinary.com/dlnapytj1/image/upload/v1733852460/samples/balloons.jpg'], 
-            reactions: {
-                likes: 95,
-            },
-            commentsCount: 3,
-            userReaction: null, 
-            createdAt: '2024-12-17 13:49:28.32396'
-        }
-    ]
+    const { apiUrl } = useAppContext();
+    const tokenManager = useAuthToken();
 
     useEffect(() => {
-        const fetchPosts = async () => {
+        const token = tokenManager.get();
+        const fetchPosts = async (profileId: string) => {
             try {
-                setTimeout(() => {
-                    setPosts(clientPosts);
-                    setIsLoading(false); // Mueve aquí el cambio de estado
-                }, 2000);
+                const response = await fetch(`${apiUrl}/posts?context=${context}&&profileid=${profileId}`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+                if (response.ok) {
+                    const data = await response.json();
+                    setPosts(data.posts);
+
+                } else {
+                    console.error('Server internal error.');
+                }
             } catch (err) {
                 console.error(err);
-                setIsLoading(false); // Asegúrate de manejar errores correctamente
+            } finally {
+                setIsLoading(false);
             }
         };
-        fetchPosts();
-    }, []);
+        fetchPosts(profileId);
+    }, [apiUrl]);
 
   return (
     <div className="feed">

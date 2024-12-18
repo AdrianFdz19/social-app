@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../Button";
 import ProfilePicture from "../ProfilePicture";
 import { formatTimestampRelative } from "../../utils/time";
+import { useAppContext } from "../../contexts/AppProvider";
 
 interface PostHeaderProps {
   author: {
@@ -17,6 +18,7 @@ interface PostHeaderProps {
 
 export default function PostHeader({author, createdAt}: PostHeaderProps) {
 
+  const { user } = useAppContext();
   const navigate = useNavigate();
 
   return (
@@ -34,12 +36,14 @@ export default function PostHeader({author, createdAt}: PostHeaderProps) {
                 <p id="ph-createdat" >{formatTimestampRelative(createdAt)}</p>
             </div>
         </div>
-        <Button
-          content={`Follow`} 
-          handleClick={()=>{}} 
-          isInput={false} 
-          styles={{width: '3.5rem', height: '2rem'}}
-        />
+        { parseInt(user.id) !== author.id && 
+            <Button
+            content={`Follow`} 
+            handleClick={()=>{}} 
+            isInput={false} 
+            styles={{width: '3.5rem', height: '2rem'}}
+          />
+        }
     </div>
   )
 }
