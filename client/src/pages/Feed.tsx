@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Post from '../components/post/Post';
 import PostSkeleton from '../components/post/PostSkeleton';
 import './Feed.scss';
-import CreatePost from '../components/CreatePost/CreatePost';
+import CreatePost from '../components/CreatePost/CreatePost.tsx';
 import { useFeedContext } from '../contexts/FeedProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import useAuthToken from '../hooks/useAuthToken';
