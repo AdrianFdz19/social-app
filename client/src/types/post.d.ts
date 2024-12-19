@@ -1,4 +1,4 @@
-
+// post.d.ts
 
 export interface PostType {
     id: number;
@@ -7,12 +7,17 @@ export interface PostType {
         username: string;
         profilePictureUrl: string;
         isOnline: boolean;
-    },
+    };
     content: string;
     mediaFiles: string[];
     reactions: {
-        likes?: number;
-    },
+        [key: string]: any; // Permite claves dinámicas
+        like?: any | string;
+        love?: any | string;
+        haha?: any | string;
+        sad?: any | string;
+        angry?: any | string;
+    };
     commentsCount: number;
     userReaction: string | null;
     createdAt: string;

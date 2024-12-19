@@ -9,7 +9,7 @@ import Overlay from '../../layouts/Overlay';
 import Close from '../Close';
 import useAuthToken from '../../hooks/useAuthToken';
 import { postIcons as icon } from '../../assets/icons';
-import CreatePostModal from './CreatePostModal';
+import CreatePostModal from './CreatePostModal.tsx';
 
 export default function CreatePost() {
 

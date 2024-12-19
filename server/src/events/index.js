@@ -2,5 +2,5 @@ import { handleUserConnection, handleUserDisconnection } from "./connectionHandl
 
 export default {
     handleUserConnection, 
-    handleUserDisconnection
+    handleUserDisconnection,
 };

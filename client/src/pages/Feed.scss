@@ -5,9 +5,15 @@
     align-items: flex-start;
     width: 30rem;
     margin-top: 1rem;
+    padding-bottom: 2rem;
     &__content {
         width: 100%;
         @include m.column;
+    }
+    &__end {
+        @include m.whitebox; 
+        @include m.center;
+        text-align: center;
     }
 }
 
@@ -15,10 +21,14 @@
     .feed {
         @include m.center;
         align-items: flex-start;
+        padding-bottom: 4rem;
         width: 90%;
         &__content {
             width: 100%;
             @include m.column;
+        }
+        &__end {
+            border-radius: 0;
         }
     }
 }
@@ -28,6 +38,7 @@
         @include m.center;
         align-items: flex-start;
         width: 100%;
+        padding-bottom: 4rem;
         &__content {
             width: 100%;
             @include m.column;

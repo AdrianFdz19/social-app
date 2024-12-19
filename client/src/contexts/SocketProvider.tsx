@@ -39,6 +39,20 @@ export default function SocketProvider({children} : {children: React.ReactNode})
         };
     }, [user]);
 
+    // Notifications socket event
+    useEffect(() => {
+
+      socket.on('new-notification', (notificationData) => {
+        console.log(notificationData);
+        alert(`New notification!`);
+      });
+
+      return () => {
+        socket.off('new-notification');
+      }
+
+    }, [socket]);
+
     let value = {
         socket
     }

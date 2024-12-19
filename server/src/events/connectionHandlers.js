@@ -22,9 +22,17 @@ export async function handleUserConnection(socket, userId) {
 
         // Asociar el socket del usuario
         const { rows: socketRows } = await pool.query(
-            `INSERT INTO user_sockets (user_id, socket_id) VALUES($1, $2) RETURNING user_id, socket_id`,
+            `
+            INSERT INTO user_sockets (user_id, socket_id) 
+            VALUES ($1, $2)
+            ON CONFLICT (user_id)
+            DO UPDATE SET 
+                socket_id = EXCLUDED.socket_id, 
+                connected_at = NOW() -- Actualiza el timestamp cuando se reconecta
+            RETURNING user_id, socket_id;
+            `,
             [userId, socket.id]
-        );
+        );        
 
         const socketAssociation = socketRows[0];
 
@@ -69,5 +77,18 @@ export async function handleUserDisconnection(socket, userId) {
         console.error('Error al manejar la desconexión del usuario:', error.message);
     }
 }
+
+export async function isUserOnline(userId) {
+    const query = await pool.query(`SELECT is_online FROM users WHERE id = $1`, [userId]); 
+    const result = query.rows[0]?.is_online;
+    return result;
+};
+
+export async function handleIsUserOnline(userId) {
+    console.log(userId);
+    const query = await pool.query(`SELECT is_online FROM users WHERE id = $1`, [userId]); 
+    const result = query.rows[0]?.is_online;
+    return result;
+};
 
 

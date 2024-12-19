@@ -3,7 +3,7 @@ import { useEffect, useState } from 'react';
 import Post from '../components/post/Post';
 import PostSkeleton from '../components/post/PostSkeleton';
 import './Feed.scss';
-import CreatePost from '../components/createPost/CreatePost';
+import CreatePost from '../components/CreatePost/CreatePost';
 import { useFeedContext } from '../contexts/FeedProvider';
 import { useAppContext } from '../contexts/AppProvider';
 import useAuthToken from '../hooks/useAuthToken';
@@ -60,6 +60,9 @@ export default function Feed({context, profileId}: FeedProps) {
                 ))}
                 </>
             )}
+            <div className="feed__end">
+                <label>✨ You’ve reached the end! Thanks for exploring. ✨</label>
+            </div>
         </div>
     </div>
   )

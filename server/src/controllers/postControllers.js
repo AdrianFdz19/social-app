@@ -1,4 +1,5 @@
 import pool from "../config/databaseConfig.js";
+import { handleNotification } from "../events/notificationHandler.js";
 
 export const handleCreatePost = async (req, res) => {
     const { content, mediaUrls } = req.body;
@@ -31,7 +32,7 @@ export const handleCreatePost = async (req, res) => {
             content: data.content, 
             mediaFiles: mediaUrls,
             reactions: {
-                likes: 0,
+                like: 0,
             }, 
             commentsCount: 0, 
             userReaction: null, 
@@ -52,67 +53,108 @@ export const handleCreatePost = async (req, res) => {
 export const handlePostReaction = async (req, res) => {
     const { postId } = req.params;
     const { reaction } = req.body;
-    const userId = req.user.id; // Extraído del token
+    const userId = req.user.id;
 
-    // Validar datos de entrada
-    if (!reaction || !postId) {
-        return res.status(400).json({ error: 'Post ID and reaction are required.' });
-    }
+    const validReactions = ['like', 'love', 'haha', 'sad', 'angry'];
 
-    const validReactions = ['like', 'love', 'dislike', 'haha', 'sad', 'angry']; // Reacciones válidas
-    if (!validReactions.includes(reaction)) {
-        return res.status(400).json({ error: 'Invalid reaction type.' });
+    if (!reaction || !postId || !validReactions.includes(reaction)) {
+        return res.status(400).json({ error: 'Invalid reaction or post ID.' });
     }
 
     const client = await pool.connect();
+    let reactionUpdate = { type: '' };
 
     try {
-        await client.query('BEGIN'); // Iniciar la transacción
+        await client.query('BEGIN');
 
-        // Verificar si el usuario ya reaccionó al post
-        const alreadyReactedQuery = await client.query(
+        // **Obtener el propietario de la publicación**
+        const postQuery = await client.query(
+            `SELECT id, user_id FROM posts WHERE id = $1`,
+            [postId]
+        );
+        const post = postQuery.rows[0];
+
+        if (!post) {
+            await client.query('ROLLBACK');
+            return res.status(404).json({ error: 'Post not found.' });
+        }
+
+        const existingReaction = await client.query(
             `SELECT id, reaction_type FROM post_reactions WHERE post_id = $1 AND user_id = $2`,
             [postId, userId]
         );
 
-        const existingReaction = alreadyReactedQuery.rows[0];
+        if (existingReaction.rows.length > 0) {
+            const prevReaction = existingReaction.rows[0].reaction_type;
 
-        if (existingReaction) {
-            // Si la reacción es la misma, eliminarla
-            if (reaction === existingReaction.reaction_type) {
-                await client.query(`DELETE FROM post_reactions WHERE id = $1`, [existingReaction.id]);
-            } 
-            // Si la reacción es diferente, actualizarla
-            else {
+            if (prevReaction === reaction) {
+                // **Eliminar la reacción**
+                await client.query(`DELETE FROM post_reactions WHERE id = $1`, [
+                    existingReaction.rows[0].id,
+                ]);
+                reactionUpdate.type = 'none';
+
+                // **Actualizar el contador de la reacción previa**
+                await client.query(
+                    `UPDATE posts SET reactions_count = jsonb_set(reactions_count, '{${prevReaction}}', (COALESCE(reactions_count->>'${prevReaction}', '1')::int - 1)::text::jsonb) WHERE id = $1`,
+                    [postId]
+                );
+            } else {
+                // **Actualizar la reacción**
                 await client.query(
                     `UPDATE post_reactions SET reaction_type = $1 WHERE id = $2`,
-                    [reaction, existingReaction.id]
+                    [reaction, existingReaction.rows[0].id]
+                );
+                reactionUpdate.type = reaction;
+
+                // **Ajustar los contadores**
+                await client.query(
+                    `UPDATE posts SET reactions_count = jsonb_set(reactions_count, '{${prevReaction}}', (COALESCE(reactions_count->>'${prevReaction}', '1')::int - 1)::text::jsonb) WHERE id = $1`,
+                    [postId]
+                );
+                await client.query(
+                    `UPDATE posts SET reactions_count = jsonb_set(reactions_count, '{${reaction}}', (COALESCE(reactions_count->>'${reaction}', '0')::int + 1)::text::jsonb) WHERE id = $1`,
+                    [postId]
                 );
             }
         } else {
-            // Si no hay reacción existente, crear una nueva
+            // **Crear una nueva reacción**
             await client.query(
                 `INSERT INTO post_reactions (post_id, user_id, reaction_type) VALUES ($1, $2, $3)`,
                 [postId, userId, reaction]
             );
+            reactionUpdate.type = reaction;
+
+            // **Incrementar el contador de la nueva reacción**
+            await client.query(
+                `UPDATE posts SET reactions_count = jsonb_set(reactions_count, '{${reaction}}', (COALESCE(reactions_count->>'${reaction}', '0')::int + 1)::text::jsonb) WHERE id = $1`,
+                [postId]
+            );
         }
 
-        await client.query('COMMIT'); // Confirmar la transacción
-        res.status(200).json({ message: 'Reaction updated successfully' });
-    } catch (error) {
-        await client.query('ROLLBACK'); // Revertir la transacción en caso de error
-        console.error('Database error:', error);
+        await client.query('COMMIT');
 
-        if (error.code === '23505') { // Manejo de errores específicos (violación de unicidad, si aplica)
-            res.status(409).json({ error: 'Duplicate reaction detected' });
-        } else {
-            res.status(500).json({ error: 'Failed to update reaction' });
+        // **Enviar notificación al propietario de la publicación**
+        if (userId !== post.user_id && reactionUpdate.type !== 'none') {
+            await handleNotification(
+                "post_reaction", // Tipo de notificación
+                userId, // Usuario que realiza la reacción
+                post.user_id, // Propietario de la publicación
+                postId, // ID de la publicación relacionada
+                null, // ID de comentario relacionado (no aplica aquí)
+                reaction // Tipo de reacción
+            );
         }
+
+        res.status(200).json({ message: 'Reaction updated successfully', reactionUpdate });
+    } catch (err) {
+        await client.query('ROLLBACK');
+        console.error(err);
+        res.status(500).json({ error: 'Failed to update reaction' });
     } finally {
-        client.release(); // Liberar el cliente de la conexión
+        client.release();
     }
 };
-
 
 export const handleFeedPosts = async (req, res) => {
     const { context, profileid: profileId } = req.query;
@@ -135,7 +177,11 @@ export const handleFeedPosts = async (req, res) => {
                 u.username,
                 u.profile_picture_url,
                 u.is_online,
-                COUNT(r.id) AS total_reactions,
+                COUNT(r.id) FILTER (WHERE r.reaction_type = 'like') AS like_count,
+                COUNT(r.id) FILTER (WHERE r.reaction_type = 'love') AS love_count,
+                COUNT(r.id) FILTER (WHERE r.reaction_type = 'haha') AS haha_count,
+                COUNT(r.id) FILTER (WHERE r.reaction_type = 'sad') AS sad_count,
+                COUNT(r.id) FILTER (WHERE r.reaction_type = 'angry') AS angry_count,
                 ur.reaction_type AS user_reaction,
                 ARRAY_AGG(m.url) FILTER (WHERE m.url IS NOT NULL) AS media_files
             FROM 
@@ -169,7 +215,11 @@ export const handleFeedPosts = async (req, res) => {
             content: post.content,
             mediaFiles: post.media_files || [], // Garantiza un array incluso si no hay URLs
             reactions: {
-                likes: parseInt(post.total_reactions, 10) || 0,
+                like: post.like_count || 0,
+                love: post.love_count || 0,
+                haha: post.haha_count || 0,
+                sad: post.sad_count || 0,
+                angry: post.angry_count || 0,
             },
             commentsCount: 0, // Ajusta esto si necesitas incluir comentarios
             userReaction: post.user_reaction,
@@ -182,4 +232,5 @@ export const handleFeedPosts = async (req, res) => {
         res.status(500).json({ success: false, error: 'Server error' });
     }
 };
+
 
