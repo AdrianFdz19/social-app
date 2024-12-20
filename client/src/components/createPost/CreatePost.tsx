@@ -4,11 +4,7 @@ import './CreatePost.scss';
 import ProfilePicture from '../ProfilePicture.tsx'
 import { useAppContext } from '../../contexts/AppProvider.tsx'
 import { useNavigate } from 'react-router-dom';
-import { ChangeEvent, FormEvent, useState } from 'react';
-import Overlay from '../../layouts/Overlay.tsx';
-import Close from '../Close.tsx';
-import useAuthToken from '../../hooks/useAuthToken.tsx';
-import { postIcons as icon } from '../../assets/icons.ts';
+import { useState } from 'react';
 import CreatePostModal from './CreatePostModal';
 
 export default function CreatePost() {

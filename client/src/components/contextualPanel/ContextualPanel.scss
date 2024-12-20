@@ -1,0 +1,67 @@
+@use '../../styles/main.scss' as m;
+
+.contextual-panel {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 2.75rem;
+    @include m.center;
+    &__box {
+        width: 95%; 
+        @include m.between; 
+        justify-content: flex-end;
+        &__cont {
+            border: 1px solid beige;
+            @include m.whitebox;
+            width: 22rem;
+            padding: .5rem;
+            box-sizing: border-box;
+        }
+    }
+}
+
+// Notification
+.notification-panel {
+    @include m.column;
+    &__item {
+        border: 1px solid m.$soft-gray; 
+        border-radius: 5px; 
+        padding: 0.3rem;
+        cursor: pointer;
+        transition: all .3s ease;
+        &:hover {
+            background-color: m.$soft-gray;
+        }
+    }
+    &__content {
+        @include m.between;
+    }
+    &__body {
+        margin-left: 0.75rem;
+        flex: 1;
+    }
+    &__text {
+        cursor: pointer;
+        label {
+            cursor: pointer;
+            font-size: .9rem;
+        }
+        .notification-panel__username {
+            font-weight: 500;
+            margin-right: 0.5rem;
+        }
+    }
+
+    #notification-panel__navigate {
+        font-size: 0.9rem;
+        font-weight: 500;
+        color: m.$secondary-color;
+        margin-top: 0.5rem;
+        text-align: center;
+
+        &:hover {
+            text-decoration: underline;
+            cursor: pointer;
+        }
+    }
+}

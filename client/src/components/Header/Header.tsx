@@ -7,6 +7,8 @@ import ProfilePicture from '../ProfilePicture';
 import './Header.scss';
 import HeaderMobile from './HeaderMobile';
 import useMobileSize from '../../hooks/useMobileSize';
+import { useState } from 'react';
+import ContextualPanel from '../contextualPanel/ContextualPanel';
 
 export default function Header() {
 
@@ -14,12 +16,15 @@ export default function Header() {
     const navigate = useNavigate();
     const isMobile = useMobileSize();
 
+    const [openContextualPanel, setOpenContextualPanel] = useState(true);
+
   return (
     <>
     {isMobile ? (
         <HeaderMobile /> 
     ) : (
         <div className="header">
+            { openContextualPanel && <ContextualPanel /> }
         <div className="header__content">
             <label onClick={()=>navigate(`/`)} >Social App</label>
             <div className="header__sections">
