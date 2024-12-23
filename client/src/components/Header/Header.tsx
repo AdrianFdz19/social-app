@@ -7,16 +7,43 @@ import ProfilePicture from '../ProfilePicture';
 import './Header.scss';
 import HeaderMobile from './HeaderMobile';
 import useMobileSize from '../../hooks/useMobileSize';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ContextualPanel from '../contextualPanel/ContextualPanel';
+import useAuthToken from '../../hooks/useAuthToken';
 
 export default function Header() {
 
-    const { user } = useAppContext();
+    const [openContextualPanel, setOpenContextualPanel] = useState(true);
+    const { user, apiUrl, noReadNotificationsCount, setNoReadNotificationsCount } = useAppContext();
     const navigate = useNavigate();
     const isMobile = useMobileSize();
+    const tokenConfig = useAuthToken();
 
-    const [openContextualPanel, setOpenContextualPanel] = useState(true);
+    // Fetch no read notifications count
+    useEffect(() => {
+        const token = tokenConfig.get();
+        const fetchNoReadCount = async() => {
+            try {
+                const response = await fetch(`${apiUrl}/users/notifications/noread`, {
+                    headers: {
+                        'Content-Type': 'application/json', 
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+    
+                if (response.ok) {
+                    const data = await response.json();
+                    setNoReadNotificationsCount(parseInt(data.count));
+                } else { 
+                    const data = await response.json();
+                    console.error(data.error);
+                } 
+            } catch(err) {
+                console.error(err);
+            }
+        };
+        fetchNoReadCount();
+    }, [apiUrl]);
 
   return (
     <>
@@ -42,6 +69,7 @@ export default function Header() {
                     <label>Messages</label>
                 </div>
                 <div className="header__sections__section">
+                    { noReadNotificationsCount && <div className="hss-noreadcount">{noReadNotificationsCount}</div> }
                     <icon.notifications className='hss-icon' /> 
                     <label>Notifications</label>
                 </div>

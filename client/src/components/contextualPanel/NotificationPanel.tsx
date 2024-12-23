@@ -5,40 +5,13 @@ import ProfilePicture from '../ProfilePicture';
 import './ContextualPanel.scss';
 import { useAppContext } from '../../contexts/AppProvider';
 import useAuthToken from '../../hooks/useAuthToken';
-import { NotificationType } from '../../types/notification';
+import { useNotifications } from '../../hooks/useNotifications';
 
 export default function NotificationPanel() {
 
     const { apiUrl } = useAppContext();
-    const handleToken = useAuthToken();
-    const [notifications, setNotifications] = useState<NotificationType[] | undefined>(undefined);
-
-    useEffect(() => {
-        const fetchNotifications = async() => {
-            const token = handleToken.get();
-            try {
-                const response = await fetch(`${apiUrl}/users/notifications`, {
-                    method: 'GET', 
-                    headers: {
-                        'Content-Type': 'application/json', 
-                        Authorization: `Bearer ${token}`
-                    },
-                });
-
-                if (response.ok) {
-                    const data = await response.json();
-                    setNotifications(data.notifications);
-                    console.log(data);
-                } else {
-                    console.error('Server internal error.');
-                }
-            } catch(err) {
-                console.error(err);
-            }
-        };
-
-        fetchNotifications();
-    }, [apiUrl]); 
+    const token = useAuthToken().get();
+    const { notifications, error } = useNotifications(apiUrl, token);
 
     return (
         <div className="notification-panel">

@@ -1,5 +1,11 @@
 // notification.d.ts
 
+type NotificationSenderType = {
+    id: number;
+    username: string;
+    pictureUrl: string | null;
+}
+
 export type NotificationType = {
     id: number;
     type: string;
@@ -8,10 +14,11 @@ export type NotificationType = {
     reactionType: string;
     relatedPostId?: number;
     relatedCommentId?: number;
-    sender: {
-        id: number;
-        username: string;
-        pictureUrl: string | null;
-    }
+    sender: NotificationSenderType;
+};
+
+export type NotificationsProps = {
+    noReadCount: null | number; 
+    list: NotificationType[]
 };
 

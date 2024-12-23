@@ -19,7 +19,7 @@ export const useSocket = () => {
 const SocketContext = createContext<SocketContextType | undefined>(undefined);
 
 export default function SocketProvider({children} : {children: React.ReactNode}) {
-    const { apiUrl, user } = useAppContext();
+    const { apiUrl, user, noReadNotificationsCount, setNoReadNotificationsCount } = useAppContext();
     const socket = io(apiUrl, {
         autoConnect: false,
         query: {
@@ -28,30 +28,24 @@ export default function SocketProvider({children} : {children: React.ReactNode})
     });
 
     useEffect(() => {
-        if (user && user.id) {
+      if (user && user.id) {
           socket.connect();
           console.log('Socket connected');
+          
+          // Registrar el evento después de conectar
+          socket.on('new-notification', (notificationData) => {
+              console.log('Notification received:', notificationData);
+              setNoReadNotificationsCount(prev => prev + 1);
+          });
         }
-
+  
         return () => {
-          socket.disconnect(); // Desconecta cuando el componente se desmonte
-          console.log('Socket disconnected');
+            socket.disconnect();
+            console.log('Socket disconnected');
+            socket.off('new-notification');
         };
     }, [user]);
-
-    // Notifications socket event
-    useEffect(() => {
-
-      socket.on('new-notification', (notificationData) => {
-        console.log(notificationData);
-        alert(`New notification!`);
-      });
-
-      return () => {
-        socket.off('new-notification');
-      }
-
-    }, [socket]);
+  
 
     let value = {
         socket

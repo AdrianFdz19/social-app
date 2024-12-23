@@ -6,6 +6,7 @@ import { socketByUserId } from "./socketHandlers.js";
 
 export async function handleNotification(type, senderId, recipientId, relatedPostId = null, relatedCommentId = null, reactionType = null) {
     try {
+        console.log('ENVIANDO NOTIFICATION')
         // 1. Recuperar datos del usuario destinatario
         const recipientDataQuery = await pool.query(
             `SELECT id, username, profile_picture_url, is_online FROM users WHERE id = $1`,
@@ -62,8 +63,10 @@ export async function handleNotification(type, senderId, recipientId, relatedPos
         if (recipientUser.is_online) {
             const recipientSocketId = await socketByUserId(recipientId);
             if (recipientSocketId) {
+                console.log('ENVIANDO LA NOTIFICACION AL USUARIO EN LINEA', recipientSocketId)
                 io.to(recipientSocketId).emit('new-notification', notificationData);
             } else {
+                console.log('LA NOTIFICACION NO SE ENVIO')
                 console.log(`Recipient ${recipientId} is no longer connected`);
             }
         }

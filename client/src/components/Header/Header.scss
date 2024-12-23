@@ -24,6 +24,18 @@
             .profpic-cont {
                
             }
+            .hss-noreadcount {
+                position: absolute;
+                width: 1.15rem; 
+                height: 1.15rem;
+                border-radius: 100%;
+                @include m.center; 
+                background-color: m.$secondary-color; 
+                color: #fff;
+                font-weight: 500;
+                font-size: .85rem;
+                right: -.3rem;
+            }
             .hss-icon {
                 width: 1.8rem;
                 height: auto;

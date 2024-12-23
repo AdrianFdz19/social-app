@@ -6,16 +6,19 @@
     left: 0;
     top: 2.75rem;
     @include m.center;
+    pointer-events: none;
     &__box {
         width: 95%; 
         @include m.between; 
         justify-content: flex-end;
+        pointer-events: none;
         &__cont {
             border: 1px solid beige;
             @include m.whitebox;
             width: 22rem;
             padding: .5rem;
             box-sizing: border-box;
+            pointer-events: auto;
         }
     }
 }

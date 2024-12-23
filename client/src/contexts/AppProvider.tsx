@@ -1,6 +1,9 @@
-import { createContext, useContext, useEffect, useState } from 'react';
+// AppProvider.tsx
+
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { User } from '../types/user';
 import useAuthToken from '../hooks/useAuthToken';
+import { NotificationsProps } from '../types/notification';
 
 interface AppContextType {
     apiUrl: string;
@@ -8,6 +11,8 @@ interface AppContextType {
     user: User | undefined;
     setUser: (user: User | undefined) => void;
     isLoading: boolean;
+    noReadNotificationsCount: null | number;
+    setNoReadNotificationsCount: React.Dispatch<React.SetStateAction<null | number>>
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -26,7 +31,9 @@ export default function AppProvider({ children }: { children: React.ReactNode })
     const [isLoading, setIsLoading] = useState(true); 
     const manageToken = useAuthToken();
     const authToken = manageToken.get();
+    const [noReadNotificationsCount, setNoReadNotificationsCount] = useState<null | number>(null);
 
+    // Verify token
     useEffect(() => {
         async function verifyToken() {
             if (!authToken) {
@@ -81,7 +88,9 @@ export default function AppProvider({ children }: { children: React.ReactNode })
         apiUrl: import.meta.env.VITE_API_URL || '',
         appEnv: import.meta.env.VITE_APP_ENV || '',
         user, setUser,
-        isLoading
+        isLoading,
+        noReadNotificationsCount,
+        setNoReadNotificationsCount
     };
 
     return <AppContext.Provider value={value}>{children}</AppContext.Provider>;

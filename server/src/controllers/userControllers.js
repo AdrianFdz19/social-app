@@ -101,3 +101,27 @@ export const handleUserNotifications = async (req, res) => {
         });
     }
 }
+
+// user no read notifications count 
+export const handleNoReadNotificationsCount = async (req, res) => {
+    try {
+        const userId = req.user.id;
+        console.log(userId);
+
+        if (!userId) return res.status(400);
+
+        const query = await pool.query(`SELECT COUNT(id) FROM notifications WHERE recipient_id = $1 AND is_read != true`, [userId]);
+        const { count } = query.rows[0];
+
+        res.status(200).json({
+            succes: true, 
+            message: 'Succes',
+            count
+        });
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({
+            error: err
+        });
+    }
+}
