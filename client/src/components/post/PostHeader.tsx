@@ -5,6 +5,8 @@ import Button from "../Button";
 import ProfilePicture from "../ProfilePicture";
 import { formatTimestampRelative } from "../../utils/time";
 import { useAppContext } from "../../contexts/AppProvider";
+import follow from "../../utils/follow";
+import useAuthToken from "../../hooks/useAuthToken";
 
 interface PostHeaderProps {
   author: {
@@ -18,8 +20,14 @@ interface PostHeaderProps {
 
 export default function PostHeader({author, createdAt}: PostHeaderProps) {
 
-  const { user } = useAppContext();
+  const { apiUrl, user } = useAppContext();
+  const manageToken = useAuthToken();
   const navigate = useNavigate();
+
+  const handleFollow = () => {
+    const token = manageToken.get();
+    follow(apiUrl, token, author.id);
+  }
 
   return (
     <div className="post__header">
@@ -39,7 +47,7 @@ export default function PostHeader({author, createdAt}: PostHeaderProps) {
         { parseInt(user.id) !== author.id && 
             <Button
             content={`Follow`} 
-            handleClick={()=>{}} 
+            handleClick={handleFollow} 
             isInput={false} 
             styles={{width: '3.5rem', height: '2rem'}}
           />

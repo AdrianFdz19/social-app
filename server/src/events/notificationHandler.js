@@ -16,6 +16,16 @@ export async function handleNotification(
         const NOTIFICATION_THRESHOLD_MS = 60 * 60 * 1000; // 1 hora (configurable)
         let specifiedData = {};
 
+        console.log('SE ESTA PROCESANDO UNA NOTIFICACION');
+
+        // 1. Recuperar datos del remitente
+        const senderDataQuery = await pool.query(
+            `SELECT id, username, profile_picture_url FROM users WHERE id = $1`,
+            [senderId]
+        );
+        const senderUser = senderDataQuery.rows[0];
+        if (!senderUser) throw new Error('Sender user not found');
+
         // 1. Recuperar datos del usuario destinatario
         const recipientDataQuery = await pool.query(
             `SELECT id, username, profile_picture_url, is_online FROM users WHERE id = $1`,
@@ -68,6 +78,14 @@ export async function handleNotification(
                     specifiedData = { relatedCommentId };
                     break;
 
+                case 'follow':
+                    notificationQuery = `
+                        INSERT INTO notifications (recipient_id, sender_id, type) VALUES ($1, $2, $3) 
+                        RETURNING *`;  
+                    notificationValues = [recipientId, senderId, type];
+                    specifiedData = {}; // no hay una informacion especifica para el tipo 'follows'
+                    break;
+
                 default:
                     console.error('Unsupported notification type:', type);
                     return;
@@ -83,8 +101,8 @@ export async function handleNotification(
                 is_read: notificationResult.is_read,
                 sender: {
                     id: senderId,
-                    username: recipientUser.username,
-                    pictureUrl: recipientUser.profile_picture_url,
+                    username: senderUser.username,
+                    pictureUrl: senderUser.profile_picture_url,
                 },
                 type,
                 ...specifiedData

@@ -1,4 +1,5 @@
 import pool from "../config/databaseConfig.js";
+import { handleNotification } from "../events/notificationHandler.js";
 
 export const allUsers = async (req, res) => {
     try {   
@@ -178,6 +179,72 @@ export const handleSearch = async (req, res) => {
         res.status(500).json({
             success: false,
             error: "Server error",
+        });
+    }
+};
+
+// Handle follow
+export const handleFollow = async (req, res) => {
+    try {
+        const userId = req.user.id; // ID del usuario autenticado
+        const { userId: targetUserId } = req.body; // ID del usuario objetivo
+
+        if (!targetUserId || userId === targetUserId) {
+            return res.status(400).json({
+                success: false,
+                message: "Invalid target user ID.",
+            });
+        }
+
+        // 1. Verificar si ya existe el registro entre userId y targetUserId
+        const { rows: existingFollow } = await pool.query(
+            `SELECT id FROM follows WHERE follower_id = $1 AND followed_id = $2`,
+            [userId, targetUserId]
+        );
+
+        if (existingFollow.length > 0) {
+            // 2. Si existe, eliminar el registro
+            await pool.query(
+                `DELETE FROM follows WHERE id = $1`,
+                [existingFollow[0].id]
+            );
+
+            await pool.query(
+                `DELETE FROM notifications WHERE type = $1 AND recipient_id = $2 AND sender_id = $3`, 
+                ['follow', targetUserId, userId]
+            );
+
+            return res.status(200).json({
+                success: true,
+                message: "Follow removed.",
+            });
+        } else {
+            // 3. Si no existe, crear el nuevo registro
+            await pool.query(
+                `INSERT INTO follows (follower_id, followed_id, created_at) VALUES ($1, $2, NOW())`,
+                [userId, targetUserId]
+            );
+
+            // **Enviar notificación al usuario target**
+            await handleNotification(
+                "follow", // Tipo de notificación
+                userId, // Usuario que realiza la reacción
+                targetUserId, // Usuario seguido
+                null, // ID de la publicación relacionada
+                null, // ID de comentario relacionado (no aplica aquí)
+                null // Tipo de reacción
+            );
+
+            return res.status(201).json({
+                success: true,
+                message: "Follow created.",
+            });
+        }
+    } catch (err) {
+        console.error("Error in handleFollow:", err);
+        res.status(500).json({
+            success: false,
+            error: "Server error.",
         });
     }
 };
