@@ -6,9 +6,13 @@ import { useAppContext } from '../../contexts/AppProvider';
 import './HeaderMobile.scss';
 import ProfilePicture from '../ProfilePicture';
 
+interface HeaderMobileProps {
+    noReadNotificationsCount: number;
+}
+
 export default function HeaderMobile({
     noReadNotificationsCount
-}) {
+} : HeaderMobileProps) {
 
     const {user, apiUrl} = useAppContext();
     const navigate = useNavigate();
