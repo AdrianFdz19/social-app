@@ -35,6 +35,12 @@
         &:hover {
             background-color: m.$soft-gray;
         }
+        &.noread {
+            background-color: #e3f4ff;
+            &:hover {
+                background-color: #daf0ff;
+            }
+        }
     }
     &__content {
         @include m.between;

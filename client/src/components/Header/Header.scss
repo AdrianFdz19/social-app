@@ -12,6 +12,15 @@
         margin: .25rem 0;
         width: 95%;
         @include m.between;
+        &__main {
+            display: flex; 
+            align-items: center;
+            width: 22rem;
+            .searchbar {
+                margin-left: .75rem;
+                flex-grow: 1;
+            }
+        }
     }
     &__sections {
         @include m.between;
@@ -21,9 +30,6 @@
             cursor: pointer;
             margin-left: 2rem;
             position: relative;
-            .profpic-cont {
-               
-            }
             .hss-noreadcount {
                 position: absolute;
                 width: 1.15rem; 
@@ -35,6 +41,9 @@
                 font-weight: 500;
                 font-size: .85rem;
                 right: -.3rem;
+                p{
+                    font-size: .6rem;
+                }
             }
             .hss-icon {
                 width: 1.8rem;

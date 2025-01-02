@@ -6,7 +6,9 @@ import { useAppContext } from '../../contexts/AppProvider';
 import './HeaderMobile.scss';
 import ProfilePicture from '../ProfilePicture';
 
-export default function HeaderMobile() {
+export default function HeaderMobile({
+    noReadNotificationsCount
+}) {
 
     const {user, apiUrl} = useAppContext();
     const navigate = useNavigate();
@@ -33,6 +35,9 @@ export default function HeaderMobile() {
                     <icon.followers className='hdmob-sec-ico' />
                 </div>
                 <div className="hdmob-section">
+                    <div className="hdmob-noread">
+                        {noReadNotificationsCount > 10 ? (<><p>+10</p></>) : (<>{noReadNotificationsCount}</>)}
+                    </div>
                     <icon.notifications className='hdmob-sec-ico' />
                 </div>
                 <div className="hdmob-section">

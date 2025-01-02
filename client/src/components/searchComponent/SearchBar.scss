@@ -1,0 +1,73 @@
+@use '../../styles/main.scss' as m;
+
+.searchbar {
+    @include m.center;
+    &__box {
+        cursor: pointer;
+        width: 100%;
+        @include m.center;
+    }
+    &__input {
+        @include m.input;
+        width: 100%;
+        border-radius: 10px;
+        background-color: m.$soft-gray;
+    }
+}
+
+.searchcont {
+    position: fixed;
+    width: 100%;
+    left: 0;
+    top: 2.5rem;
+    @include m.center;
+    pointer-events: none;
+    &__box {
+        width: 95%;
+        pointer-events: none;
+    }
+    &__content {
+        @include m.whitebox;
+        width: 22rem;
+        pointer-events: all;
+        border: 1px solid m.$soft-gray;
+        border-radius: 10px;
+        .searchloading {
+            @include m.center;
+            .rli-d-i-b {
+                width: 2rem; 
+                height: 2rem;
+            }
+        }
+        .searchnone {
+            color: m.$gray;
+            font-size: .9rem;
+            text-align: center;
+        }
+        .userlist {
+            padding: 0;
+            list-style: none;
+            .useritem {
+                width: 100%;
+                display: flex; 
+                align-items: center;
+                padding: .3rem;
+                box-sizing: border-box;
+                border-radius: 10px;
+                position: relative;
+                span {
+                    margin-left: .75rem;
+                    font-weight: 500;
+                    &:hover {
+                        cursor: pointer;
+                        text-decoration: underline;
+                    }
+                }
+                .button {
+                    position: absolute;
+                    right: 0;
+                }
+            }
+        }
+    }
+}

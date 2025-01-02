@@ -42,10 +42,24 @@
             /* border: 1px solid red; */
             margin-top: .3rem;
             .hdmob-section {
+                position: relative;
+                cursor: pointer;
                 .hdmob-sec-ico {
                     color: m.$gray;
                     width: 2rem;
                     height: auto;
+                }
+                .hdmob-noread {
+                    position: absolute;
+                    width: 1.15rem; 
+                    height: 1.15rem;
+                    border-radius: 100%;
+                    @include m.center; 
+                    background-color: m.$secondary-color; 
+                    color: #fff;
+                    font-weight: 500;
+                    font-size: .85rem;
+                    right: -.3rem;
                 }
             }
         }

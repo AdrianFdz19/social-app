@@ -10,6 +10,7 @@ import useMobileSize from '../../hooks/useMobileSize';
 import { useEffect, useState } from 'react';
 import ContextualPanel from '../contextualPanel/ContextualPanel';
 import useAuthToken from '../../hooks/useAuthToken';
+import SearchBar from '../searchComponent/SearchBar';
 
 export default function Header() {
 
@@ -48,12 +49,19 @@ export default function Header() {
   return (
     <>
     {isMobile ? (
-        <HeaderMobile /> 
+        <HeaderMobile
+            noReadNotificationsCount={noReadNotificationsCount}
+        /> 
     ) : (
         <div className="header">
             { openContextualPanel && <ContextualPanel /> }
         <div className="header__content">
-            <label onClick={()=>navigate(`/`)} >Social App</label>
+            <div className="header__content__main">
+                <label onClick={()=>navigate(`/`)} >App</label>
+
+                <SearchBar />
+            </div>
+
             <div className="header__sections">
 
                 <div className="header__sections__section" onClick={()=>navigate(`/`)}>
@@ -69,7 +77,11 @@ export default function Header() {
                     <label>Messages</label>
                 </div>
                 <div className="header__sections__section">
-                    { noReadNotificationsCount && <div className="hss-noreadcount">{noReadNotificationsCount}</div> }
+                    { noReadNotificationsCount > 0 && 
+                    <div className="hss-noreadcount">
+                        {noReadNotificationsCount > 10 ? (<><p>+10</p></>) : (<>{noReadNotificationsCount}</>)}
+                    </div> 
+                    }
                     <icon.notifications className='hss-icon' /> 
                     <label>Notifications</label>
                 </div>

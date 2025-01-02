@@ -17,7 +17,8 @@ export default function Feed({context, profileId}: FeedProps) {
 
     const [isLoading, setIsLoading] = useState(true);
     const { posts, setPosts } = useFeedContext();
-    const { apiUrl } = useAppContext();
+    const { apiUrl, user } = useAppContext();
+    const { id: userId } = user;
     const tokenManager = useAuthToken();
 
     useEffect(() => {
@@ -50,7 +51,8 @@ export default function Feed({context, profileId}: FeedProps) {
   return (
     <div className="feed">
         <div className="feed__content">
-            <CreatePost />
+            { context === 'profile' && profileId == userId && <CreatePost /> }
+            { context === 'home' && <CreatePost /> }
             {isLoading ? (
                 Array(2).fill(0).map((_, index) => <PostSkeleton key={index} />)
             ) : (

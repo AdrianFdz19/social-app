@@ -215,11 +215,11 @@ export const handleFeedPosts = async (req, res) => {
             content: post.content,
             mediaFiles: post.media_files || [], // Garantiza un array incluso si no hay URLs
             reactions: {
-                like: post.like_count || 0,
-                love: post.love_count || 0,
-                haha: post.haha_count || 0,
-                sad: post.sad_count || 0,
-                angry: post.angry_count || 0,
+                like: parseInt(post.like_count) || 0,
+                love: parseInt(post.love_count) || 0,
+                haha: parseInt(post.haha_count) || 0,
+                sad: parseInt(post.sad_count) || 0,
+                angry: parseInt(post.angry_count) || 0,
             },
             commentsCount: 0, // Ajusta esto si necesitas incluir comentarios
             userReaction: post.user_reaction,

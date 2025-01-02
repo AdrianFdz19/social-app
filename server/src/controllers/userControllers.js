@@ -49,6 +49,8 @@ export const profileInfo = async (req, res) => {
 export const handleUserNotifications = async (req, res) => {
     try {   
         const userId = req.user.id;
+        const max = req.query.max || null;
+
         if (!userId) return res.status(400).json({ error: 'Invalid user ID.' });
 
         // Traer la informacion de todas las notificaciones del usuario
@@ -68,6 +70,8 @@ export const handleUserNotifications = async (req, res) => {
             FROM notifications n 
             JOIN users u ON u.id = n.sender_id
             WHERE n.recipient_id = $1
+            ORDER BY n.created_at DESC
+            ${max && `LIMIT ${max}`}
         `;
         const notificationQuery = await pool.query(query, [userId]);
         const allNotifications = notificationQuery.rows;
@@ -125,3 +129,55 @@ export const handleNoReadNotificationsCount = async (req, res) => {
         });
     }
 }
+
+// Handle search 
+export const handleSearch = async (req, res) => {
+    try {
+        const { searchValue } = req.body;
+
+        if (!searchValue || searchValue.trim() === "") {
+            return res.status(400).json({
+                success: false,
+                message: "Search value is required.",
+            });
+        }
+
+        // Query para buscar usuarios con un username similar
+        const query = `
+            SELECT id, username, profile_picture_url
+            FROM users
+            WHERE username ILIKE $1
+            LIMIT 10;
+        `;
+ 
+        const values = [`%${searchValue}%`]; // Añade comodines para buscar coincidencias parciales
+
+        const findQuery = await pool.query(query, values);
+
+        if (findQuery.rows.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: "No users found matching the search value.",
+            });
+        }
+
+        const users = findQuery.rows.map((user) => {
+            return {
+                id: user.id, 
+                username: user.username, 
+                pictureUrl: user.profile_picture_url
+            };
+        });
+
+        res.status(200).json({
+            success: true,
+            users, // Devuelve los usuarios encontrados
+        });
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({
+            success: false,
+            error: "Server error",
+        });
+    }
+};
