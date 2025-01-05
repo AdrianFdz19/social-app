@@ -1,0 +1,16 @@
+@use '../../styles/main.scss' as m;
+
+.messages {
+    height: calc(100vh - 3rem); // Resta el margen superior del alto total
+    @include m.center;
+    margin-top: 2.75rem;
+
+    &__box {
+        width: 100%;
+        height: 100%;
+        @include m.between;
+        align-items: stretch;
+    }
+}
+
+

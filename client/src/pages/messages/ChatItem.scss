@@ -1,0 +1,70 @@
+@use '../../styles/main.scss' as m;
+
+.chat-item {
+  display: flex;
+  align-items: center;
+  height: 4.5rem;
+  padding: 0 0.5rem;
+  border-bottom: 1px solid gainsboro;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+
+  &:hover {
+    background-color: m.$soft-gray;
+  }
+
+  &__picture {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 3rem;
+    height: 3rem;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    flex-grow: 1;
+    margin-left: 0.5rem;
+
+    &__name {
+      font-weight: 500;
+      margin-bottom: 0.3rem;
+      font-size: 1rem;
+      @include m.between;
+      &__timestamp {
+        margin-left: 0.5rem;
+        color: m.$gray;
+        font-weight: 400;
+        font-size: .75rem;
+      }
+    }
+
+    &__last-message {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: m.$gray;
+
+      &__text {
+        flex-grow: 1;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      &__unread {
+        background-color: m.$secondary-color;
+        width: 1.5rem;
+        height: 1.5rem;
+        border-radius: 100%;
+        @include m.center;
+        color: #fff;
+      }
+
+    }
+  }
+}

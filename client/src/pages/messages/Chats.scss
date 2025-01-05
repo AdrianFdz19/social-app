@@ -1,0 +1,18 @@
+@use '../../styles/main.scss' as m; 
+
+.chats {
+    label {
+        cursor: pointer;
+    }
+    width: 35%;
+    background-color: #fff;
+    border-right: 1px solid gainsboro;
+    &__content {
+        @include m.column;
+        height: 100%;
+    }
+    &__items {
+        @include m.column;
+        padding: .5rem; 
+    }
+}

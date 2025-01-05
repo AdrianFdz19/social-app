@@ -14,7 +14,7 @@ import SearchBar from '../searchComponent/SearchBar';
 
 export default function Header() {
 
-    const [openContextualPanel, setOpenContextualPanel] = useState(true);
+    const [openContextualPanel, setOpenContextualPanel] = useState(false);
     const { user, apiUrl, noReadNotificationsCount, setNoReadNotificationsCount } = useAppContext();
     const navigate = useNavigate();
     const isMobile = useMobileSize();
@@ -54,7 +54,7 @@ export default function Header() {
         /> 
     ) : (
         <div className="header">
-            { openContextualPanel && <ContextualPanel /> }
+            { openContextualPanel && <ContextualPanel isOpen={openContextualPanel} setIsOpen={setOpenContextualPanel} /> }
         <div className="header__content">
             <div className="header__content__main">
                 <label onClick={()=>navigate(`/`)} >App</label>
@@ -72,11 +72,11 @@ export default function Header() {
                     <icon.followers className='hss-icon' /> 
                     <label>Followers</label>
                 </div>
-                <div className="header__sections__section">
+                <div className="header__sections__section" onClick={()=>navigate(`/messages`)}>
                     <icon.messages className='hss-icon' /> 
                     <label>Messages</label>
                 </div>
-                <div className="header__sections__section">
+                <div className="header__sections__section" onClick={()=>setOpenContextualPanel(true)}>
                     { noReadNotificationsCount > 0 && 
                     <div className="hss-noreadcount">
                         {noReadNotificationsCount > 10 ? (<><p>+10</p></>) : (<>{noReadNotificationsCount}</>)}

@@ -6,6 +6,7 @@ import Home from './pages/Home'
 import NestedRoute from './layouts/NestedRoute'
 import Profile from './pages/Profile/Profile'
 import LayerWithHeader from './layouts/LayerWithHeader'
+import Messages from './pages/messages/Messages'
 
 function App() {
 
@@ -16,6 +17,7 @@ function App() {
           <Route element={<LayerWithHeader />} >
             <Route path='/' element={<Home />} ></Route>
             <Route path='/profile/:profileUserId' element={<Profile />} ></Route>
+            <Route path='/messages' element={<Messages />} ></Route>
           </Route>
         </Route>
     
