@@ -12,6 +12,8 @@ import { PiChatCenteredDotsFill as messages } from "react-icons/pi";
 import { AiFillHome as home } from "react-icons/ai";
 import { IoIosClose as close } from "react-icons/io";
 import { MdOutlineAddPhotoAlternate as addmedia } from "react-icons/md";
+import { IoCheckmarkOutline as sent } from "react-icons/io5";
+import { IoCheckmarkDoneOutline as read } from "react-icons/io5";
 
 export const headerIcons = {
     followers,
@@ -40,5 +42,10 @@ export const postIcons = {
 
 export const utilIcons = {
     close
+}
+
+export const chatIcons = {
+    sent,
+    read
 }
 

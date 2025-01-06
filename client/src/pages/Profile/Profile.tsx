@@ -12,7 +12,8 @@ export default function Profile() {
 
   const { user, apiUrl } = useAppContext();
   const { profileUserId } = useParams();
-  const [profile, setProfile] = useState<ProfileType | undefined>(undefined)
+  const [profile, setProfile] = useState<ProfileType | undefined>(undefined);
+  const isUserProfile = profileUserId == user.id;
 
   useEffect(() => {
     // Scroll to the top of the page when the component mounts
@@ -63,7 +64,7 @@ export default function Profile() {
   return (
     <div className="profile">
         <div className="profile__content">
-        {profile ? <ProfileHero data={profile} /> : <p>Loading profile...</p>}
+        {profile ? <ProfileHero targetId={profileUserId} isUserProfile={isUserProfile}  data={profile} /> : <p>Loading profile...</p>}
         <Feed context='profile' profileId={profileUserId} />
         </div>
     </div>
