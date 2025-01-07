@@ -2,15 +2,15 @@
 
 import ProfilePicture from "../../components/ProfilePicture";
 import { formatTimestampChatStyle } from "../../utils/time";
-import { Chat } from "../../types/messages";
+import { ChatItemProps } from "../../types/messages";
 import './ChatItem.scss';
 
-interface ChatItemProps {
-  chat: Chat;
-  openChat: (chatId: number) => void
-};
+type ChatItemPropsSecondary = {
+  chat: ChatItemProps;
+  openChat?: (chatId: number) => void;
+}
 
-export default function ChatItem({ chat, openChat }: ChatItemProps) {
+export default function ChatItem({ chat, openChat }: ChatItemPropsSecondary) {
   const handleOpenChat = (chatId: number) => {
     // Lógica para manejar el clic en el chat
     openChat(chatId);

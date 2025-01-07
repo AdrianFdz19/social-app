@@ -1,4 +1,5 @@
 import pool from "../config/databaseConfig.js";
+import { handleMessage } from "../events/messageHandler.js";
 
 export const handleGetChatInfo = async (req, res) => {
     const client = await pool.connect();
@@ -249,19 +250,18 @@ export const handleSendMessage = async (req, res) => {
 
         if (!userId || !chatId || ( userId != senderId )) return res.status(400).json({message: 'Missing valid props.'});
 
-        console.log(userId, chatId, senderId, typeof userId, typeof chatId, typeof senderId);
+        // Seleccionar el id del segundo participante
+        const otherParticipantQuery = await pool.query(`
+            SELECT 
+            u.id AS other_user_id
+            FROM users u
+            INNER JOIN chat_participants cp ON u.id = cp.user_id
+            WHERE cp.chat_id = $1 AND cp.user_id != $2
+        `, [chatId, userId]);
+        
+        const otherParticipantId = otherParticipantQuery.rows[0]?.other_user_id;
 
         if (isFirstMessage) {
-            // Seleccionar el id del segundo participante
-            const otherParticipantQuery = await pool.query(`
-                SELECT 
-                u.id AS other_user_id
-                FROM users u
-                INNER JOIN chat_participants cp ON u.id = cp.user_id
-                WHERE cp.chat_id = $1 AND cp.user_id != $2
-            `, [chatId, userId]);
-            
-            const otherParticipantId = otherParticipantQuery.rows[0]?.other_user_id;
   
             // Actualizar el is_active del user_chats para el participante receptos del mensaje
             await pool.query(`UPDATE user_chats SET is_active = true WHERE user_id = $1`, [otherParticipantId]);
@@ -277,12 +277,21 @@ export const handleSendMessage = async (req, res) => {
         const data = messageQuery.rows[0];
 
         const messageData = {
+            chatId,
             id: data.id,
             text: data.content, 
             sendAt: data.created_at, 
             status: data.status,
             isUserMsg: true
         };
+
+        // Manejar el evento de message
+        const messageDataForParticipant = {
+            ...messageData, 
+            chatId,
+            isUserMsg: false
+        }
+        await handleMessage(messageDataForParticipant, chatId, otherParticipantId);
 
         res.status(200).json({
             succes: true, 

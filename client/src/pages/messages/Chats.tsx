@@ -1,12 +1,8 @@
 // Chats.tsx
-import { useEffect, useState } from 'react';
-import ProfilePicture from '../../components/ProfilePicture';
+import { useEffect } from 'react';
 import { useAppContext } from '../../contexts/AppProvider';
 import { useChatContext } from '../../contexts/ChatProvider';
 import useAuthToken from '../../hooks/useAuthToken';
-import { openChat } from '../../services/openChat.service';
-import { Chat } from '../../types/messages';
-import { formatTimestampChatStyle, formatTimestampRelative } from '../../utils/time';
 import ChatItem from './ChatItem';
 import './Chats.scss';
 
@@ -60,10 +56,9 @@ export default function Chats() {
             ],
         }
     ];     */
-    const { setCurrentChatId } = useChatContext();
+    const { setCurrentChatId, chats, setChats, currentChatId } = useChatContext();
     const { apiUrl } = useAppContext();
     const tokenManager = useAuthToken();
-    const [chats, setChats] = useState([]);
 
     // Obtener todos los chats activos 
 
@@ -81,8 +76,9 @@ export default function Chats() {
 
                 if (response.ok) {
                     const data = await response.json();
-                    console.log(data);
+                    /* console.log(data); */
                     setChats(data.chats);
+                    console.log('SE RECIBIERON LOS CHATS');
                 } else {
                     console.error('Server internal error.');
                 }
@@ -91,7 +87,7 @@ export default function Chats() {
             }
         };
         handleFetchAllChats();
-    }, []);
+    }, [currentChatId]);
 
     const handleOpenChat = (chatId: number) => {
         setCurrentChatId(chatId);
@@ -106,7 +102,10 @@ export default function Chats() {
                     chats.length > 0 ? (
                         <>
                         {chats.map((chat) => (
-                            <ChatItem key={chat.id} chat={chat} openChat={handleOpenChat} />
+                            <ChatItem 
+                                key={chat.id} 
+                                chat={chat} 
+                                openChat={handleOpenChat} />
                         ))}
                         </>
                     ) : (

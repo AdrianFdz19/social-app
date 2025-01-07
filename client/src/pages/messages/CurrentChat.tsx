@@ -7,15 +7,15 @@ import './CurrentChat.scss';
 import Message from './Message';
 import { useAppContext } from '../../contexts/AppProvider';
 import useAuthToken from '../../hooks/useAuthToken';
-import { useChatContext } from '../../contexts/ChatProvider';
-import { MessageType } from '../../types/messages';
+import { updateChats, useChatContext } from '../../contexts/ChatProvider';
+import { MessagesType } from '../../types/messages';
 
 export default function CurrentChat() {
 
   const { apiUrl, user } = useAppContext();
   const tokenManager = useAuthToken();
   const [message, setMessage] = useState('');
-  const { currentChatId } = useChatContext();
+  const { currentChatId, messages, setMessages, setChats } = useChatContext();
   const [chat, setChat] = useState({
     id: null, 
     name: '', 
@@ -23,7 +23,6 @@ export default function CurrentChat() {
     pictureUrl: '',
     isActive: ''
   });
-  const [messages, setMessages] = useState([]);
 
   useEffect(() => {
     const fetchChatInfo = async () => {
@@ -38,10 +37,10 @@ export default function CurrentChat() {
         });
         if (response.ok) {
           const data = await response.json();
-          console.log(data);
+          /* console.log(data); */
           setChat(data.chat);
           setMessages(data.messages);
-          console.log(data.messages);
+          /* console.log(data.messages); */
         } else {
           const data = await response.json();
           console.log(data);
@@ -58,14 +57,14 @@ export default function CurrentChat() {
     setMessage(value);
   };
 
-  const handleReceiveSendedMessage = (message: MessageType) => {
-    setMessages(prev => ([...prev, message]));
+  const handleReceiveSendedMessage = (message: MessagesType) => {
+    setMessages(prev => [...prev, message]);
   };
 
   const handleSendMessage = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const token = tokenManager.get();
-    console.log({ chatId: currentChatId, senderId: user.id, message });
+    /* console.log({ chatId: currentChatId, senderId: user.id, message }); */
     let isFirstMessage = messages.length === 0;
     try {
       const response = await fetch(`${apiUrl}/chats/message`, {
@@ -79,8 +78,10 @@ export default function CurrentChat() {
 
       if (response.ok) {
         const data = await response.json();
-        handleReceiveSendedMessage(data.message);
         console.log(data);
+        handleReceiveSendedMessage(data.message);
+        updateChats(setChats, data.message);
+        /* console.log(data); */
       } else {
         console.error('Server internal error.');
       }
