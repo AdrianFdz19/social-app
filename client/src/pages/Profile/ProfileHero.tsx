@@ -67,6 +67,7 @@ export default function ProfileHero({data, isUserProfile, targetId} : ProfileHer
                     handleClick={handleOpenChat} 
                     styles={{}} 
                     isInput={false} 
+                    disabled={false}
                 />
             }
         </div>
