@@ -6,17 +6,20 @@ interface ButtonProps {
     handleClick: () => void; 
     isInput: boolean;
     styles: React.CSSProperties;
+    disabled: boolean;
 }
 
-export default function Button({content, handleClick, isInput, styles} : ButtonProps) {
+export default function Button({content, handleClick, isInput, styles, disabled} : ButtonProps) {
   return (
     <>
     {isInput ? (
         <input 
-            type="text" 
+            type="submit" 
+            onChange={()=>{}}
             value={content} 
             className='button-input' 
             style={styles} 
+            disabled={disabled}
         />
     ) : (
         <button 

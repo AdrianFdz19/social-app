@@ -1,5 +1,10 @@
 // Chats.tsx
+import { useEffect, useState } from 'react';
 import ProfilePicture from '../../components/ProfilePicture';
+import { useAppContext } from '../../contexts/AppProvider';
+import { useChatContext } from '../../contexts/ChatProvider';
+import useAuthToken from '../../hooks/useAuthToken';
+import { openChat } from '../../services/openChat.service';
 import { Chat } from '../../types/messages';
 import { formatTimestampChatStyle, formatTimestampRelative } from '../../utils/time';
 import ChatItem from './ChatItem';
@@ -7,7 +12,7 @@ import './Chats.scss';
 
 export default function Chats() {
 
-    let chats: Chat[] = [
+    /* let chats: Chat[] = [
         { 
             id: 100,
             name: 'Frank Ruiz', 
@@ -54,16 +59,60 @@ export default function Chats() {
                 { id: 3, name: 'Luis Torres' },
             ],
         }
-    ];    
+    ];     */
+    const { setCurrentChatId } = useChatContext();
+    const { apiUrl } = useAppContext();
+    const tokenManager = useAuthToken();
+    const [chats, setChats] = useState([]);
+
+    // Obtener todos los chats activos 
+
+    useEffect(() => {
+        const handleFetchAllChats = async () => {
+            try {
+                const token = tokenManager.get();
+                const response = await fetch(`${apiUrl}/chats`, {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json', 
+                        Authorization: `Bearer ${token}`
+                    }
+                });
+
+                if (response.ok) {
+                    const data = await response.json();
+                    console.log(data);
+                    setChats(data.chats);
+                } else {
+                    console.error('Server internal error.');
+                }
+            } catch(err) {
+                console.error(err);
+            }
+        };
+        handleFetchAllChats();
+    }, []);
+
+    const handleOpenChat = (chatId: number) => {
+        setCurrentChatId(chatId);
+    };
 
   return (
     <div className="chats">
         <div className="chats__content">
             <h1>chats</h1>
             <div className="chats__items">
-                { chats.map((chat, id) => (
-                    <ChatItem chat={chat} />
-                )) }
+                { 
+                    chats.length > 0 ? (
+                        <>
+                        {chats.map((chat) => (
+                            <ChatItem key={chat.id} chat={chat} openChat={handleOpenChat} />
+                        ))}
+                        </>
+                    ) : (
+                        <p>There is no chat actives</p>
+                    )
+                }
             </div>
         </div>
     </div>

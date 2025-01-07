@@ -30,7 +30,7 @@ export default function SocketProvider({children} : {children: React.ReactNode})
     useEffect(() => {
       if (user && user.id) {
           socket.connect();
-          console.log('Socket connected');
+          /* console.log('Socket connected'); */
           
           // Registrar el evento después de conectar
           socket.on('new-notification', (notificationData) => {
@@ -41,7 +41,7 @@ export default function SocketProvider({children} : {children: React.ReactNode})
   
         return () => {
             socket.disconnect();
-            console.log('Socket disconnected');
+            /* console.log('Socket disconnected'); */
             socket.off('new-notification');
         };
     }, [user]);

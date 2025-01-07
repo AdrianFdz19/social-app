@@ -38,7 +38,7 @@ export default function FeedProvider({ children }: { children: React.ReactNode }
             if (response.ok) {
                 const data = await response.json();
                 const { reactionUpdate } = data;
-                console.log(reactionUpdate);
+                /* console.log(reactionUpdate); */
     
                 setPosts(prev =>
                     prev.map((post) => {
@@ -76,9 +76,9 @@ export default function FeedProvider({ children }: { children: React.ReactNode }
         }
     };    
 
-    useEffect(() => {
+    /* useEffect(() => {
         console.log(posts);
-    }, [posts]);
+    }, [posts]); */
 
     const value: FeedContextType = {
         posts,

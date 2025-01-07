@@ -6,9 +6,9 @@ import useMobileSize from '../../hooks/useMobileSize';
 import Button from '../../components/Button';
 import { useAppContext } from '../../contexts/AppProvider';
 import useAuthToken from '../../hooks/useAuthToken';
-import { openChat } from '../../services/openChat.service';
 import { useChatContext } from '../../contexts/ChatProvider';
 import { useNavigate } from 'react-router-dom';
+import { openChat } from '../../services/openChat.service';
 
 interface ProfileHeroProps {
     isUserProfile: boolean;
@@ -25,16 +25,19 @@ export default function ProfileHero({data, isUserProfile, targetId} : ProfileHer
     const isMobile = useMobileSize();
     const tokenManager = useAuthToken();
 
-    console.log(isUserProfile);
-
     const handleOpenChat = async () => {
-        const token = tokenManager.get();
-        const response = await openChat(apiUrl, token, parseInt(targetId));
-        console.log(response);
-        if (response.chatId) {
-            setCurrentChatId(response.chatId);
-            redirect('/messages');
-        }
+        try {
+            const token = tokenManager.get();
+            const result = await openChat(apiUrl, token, Number(targetId));
+            if (result.chatId) {
+                setCurrentChatId(result.chatId);
+                redirect('/messages');
+            } else {
+                console.error('Server internal error.');
+            }
+        } catch(err) {
+            console.error(err);
+        } 
     };
 
   return (

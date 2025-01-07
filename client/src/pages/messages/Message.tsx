@@ -1,7 +1,7 @@
 // Message.tsx
 
 import './Message.scss';
-import { formatTimestampRelative } from '../../utils/time';
+import { formatTimestampChatStyle } from '../../utils/time';
 
 type MessageType = {
     id: number;
@@ -23,7 +23,7 @@ export default function Message({ msg }: MessageProps) {
                     <p>{msg.text}</p>
                 </div>
                 <div className="chat-message__details">
-                    <p id="send-time">{formatTimestampRelative(msg.sendAt)}</p>
+                    <p id="send-time">{formatTimestampChatStyle(msg.sendAt)}</p>
                     <p id="message-status">{msg.status}</p>
                 </div>
             </div>

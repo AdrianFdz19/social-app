@@ -1,12 +1,11 @@
-
+// openChat.service.ts
 
 export async function openChat(
     apiUrl: string, 
     token: string, 
-    targetId: number
+    targetId: number,
 ) {
     try {
-        console.log(apiUrl, token, targetId);
         const response = await fetch(`${apiUrl}/chats/open/${targetId}`, {
             method: 'GET', 
             headers: {

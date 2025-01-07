@@ -9,17 +9,16 @@ import FeedProvider from './contexts/FeedProvider.tsx'
 import ChatProvider from './contexts/ChatProvider.tsx'
 
 createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <AppProvider>
-      <SocketProvider>
-        <FeedProvider>
-          <ChatProvider>
-            <Router>
-              <App />
-            </Router>
-          </ChatProvider>
-        </FeedProvider>
-      </SocketProvider>
-    </AppProvider>
-  </StrictMode>,
+  
+  <AppProvider>
+    <SocketProvider>
+      <FeedProvider>
+        <ChatProvider>
+          <Router>
+            <App />
+          </Router>
+        </ChatProvider>
+      </FeedProvider>
+    </SocketProvider>
+  </AppProvider>
 )

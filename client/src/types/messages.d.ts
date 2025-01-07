@@ -9,6 +9,14 @@ sendAt: string;
 status: MessageStatus;
 }
 
+export interface MessageType {
+    id: number;
+    senderId: number; 
+    text: string; 
+    sendAt: string;
+    status: MessageStatus;
+}
+
 export interface Chat {
 id: number;
 name: string;

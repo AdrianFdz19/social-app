@@ -7,15 +7,17 @@ import './ChatItem.scss';
 
 interface ChatItemProps {
   chat: Chat;
-}
+  openChat: (chatId: number) => void
+};
 
-export default function ChatItem({ chat }: ChatItemProps) {
-  const handleChatClick = () => {
+export default function ChatItem({ chat, openChat }: ChatItemProps) {
+  const handleOpenChat = (chatId: number) => {
     // Lógica para manejar el clic en el chat
+    openChat(chatId);
   };
 
   return (
-    <div key={chat.id} className="chat-item" onClick={handleChatClick}>
+    <div key={chat.id} className="chat-item" onClick={()=>handleOpenChat(chat.id)}>
       <div className="chat-item__picture">
         <ProfilePicture
           url={chat.pictureUrl}
