@@ -137,6 +137,7 @@ export default function SearchBar() {
                                                 handleClick={() => {}}
                                                 isInput={false}
                                                 styles={{ width: '3.5rem' }}
+                                                disabled={false}
                                             />
                                         </li>
                                     ))}
