@@ -50,6 +50,7 @@ export default function PostHeader({author, createdAt}: PostHeaderProps) {
             handleClick={handleFollow} 
             isInput={false} 
             styles={{width: '3.5rem', height: '2rem'}}
+            disabled={false}
           />
         }
     </div>
