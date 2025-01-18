@@ -1,4 +1,4 @@
-# Social App Documentacion
+# Social App Documentación
 
 ## Descripción
 Esta es una red social básica que permite a los usuarios crear publicaciones, seguir a otros usuarios, dar "me gusta" a publicaciones, buscar perfiles, enviar mensajes en tiempo real y recibir notificaciones relacionadas con la aplicación.
