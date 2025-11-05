@@ -101,7 +101,6 @@ cd social-app
 ---
 
 ## Capturas de Pantalla
-Puedes incluir capturas de pantalla de la interfaz o flujos clave para ilustrar mejor el funcionamiento del proyecto:
 
 ![Feed del home](https://res.cloudinary.com/dlnapytj1/image/upload/v1737223467/Captura_de_pantalla_2025-01-10_185445_eqvyzy.png)
 ![Chat entre usuarios en tiempo real](https://res.cloudinary.com/dlnapytj1/image/upload/v1737223489/Captura_de_pantalla_2025-01-10_185745_viemc5.png)
@@ -119,6 +118,7 @@ Puedes incluir capturas de pantalla de la interfaz o flujos clave para ilustrar 
 - Agregar opciones de edición o eliminación de publicaciones.
 - Implementar comentarios en las publicaciones.
 - Mejorar el diseño del frontend para una experiencia de usuario más refinada.
+- Mejorar la lógica para subir imagenes a traves de Cloudinary.
 
 ---
 
