@@ -38,6 +38,8 @@ export default function CreatePostModal({handleModal} : CreatePostProps) {
     const handleFormSubmit = async (event: FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         const authToken = manageToken.get();
+        console.log(authToken);
+        
         setIsLoading(true);
         try {
             let mediaUrls = [];

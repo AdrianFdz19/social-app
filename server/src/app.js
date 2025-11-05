@@ -7,6 +7,7 @@ import users from './routes/userRoutes.js';
 import posts from './routes/postRoutes.js';
 import media from './routes/mediaRoutes.js';
 import chat from './routes/chatRoutes.js';
+import pool from './config/databaseConfig.js';
 const app = express();
 
 app.use(express.json());
@@ -19,5 +20,16 @@ app.use('/media', media);
 app.use('/chats', chat);
 
 app.get('/', (req,res) => res.send('Server is online'));
+
+app.get('/testdb', async (req, res) => {
+    try {
+        const response = await pool.query('SELECT * FROM posts');
+        const result = response.rows;
+        res.status(200).json({result});
+    } catch(err) {
+        console.error(err);
+        res.status(500).json({message: 'Error'});
+    }
+});
 
 export default app;
